@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Verdana Organics – Financial Control Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --g1:#1C3A1E;--g2:#2C5F2D;--g3:#3D7A40;--g4:#5C8C3A;--g5:#7EAB52;
+  --cr:#F2EDE4;--cl:#FAF7F2;--cm:#E5DDD3;
+  --e1:#8B5E3C;--e2:#C4956A;--sn:#D4A96A;--vn:#F5E6C8;
+  --dt:#1C2B1E;--mt:#4A5C4A;--lt:#7A8C7A;--wh:#FFFFFF;
+  --rd:#C0392B;--am:#E67E22;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cl);color:var(--dt);font-size:13px}
+
+/* HEADER */
+.hdr{background:var(--g1);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:58px;border-bottom:3px solid var(--sn)}
+.hdr-l{display:flex;align-items:center;gap:12px}
+.lm{width:34px;height:34px;background:var(--g2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.ht-co{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--sn);font-weight:600}
+.ht-rp{font-size:15px;font-weight:700;color:var(--vn);margin-top:1px}
+.hdr-r{display:flex;align-items:center;gap:14px}
+.psel{display:flex;gap:3px;background:var(--g2);border-radius:6px;padding:3px}
+.pb{background:none;border:none;color:var(--cr);font-size:11px;padding:4px 10px;border-radius:4px;cursor:pointer;font-family:'DM Sans';font-weight:500;transition:all .2s}
+.pb.act{background:var(--sn);color:var(--g1);font-weight:700}
+.fybadge{background:var(--g2);color:var(--vn);font-size:10px;font-weight:600;padding:4px 11px;border-radius:20px;letter-spacing:.5px}
+.live{display:flex;align-items:center;gap:5px;color:var(--g5);font-size:10px}
+.dot{width:7px;height:7px;background:var(--g5);border-radius:50%;animation:pu 2s infinite}
+@keyframes pu{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* TABS */
+.tabs{display:flex;background:var(--cm);border-bottom:1px solid #D4CBBC;padding:0 24px}
+.tab{padding:10px 16px;font-size:12px;font-weight:600;cursor:pointer;color:var(--mt);border-bottom:3px solid transparent;transition:all .18s}
+.tab.act{color:var(--g2);border-color:var(--g2);background:var(--cl)}
+
+/* CONTROLS BAR */
+.cbar{display:flex;align-items:center;gap:14px;padding:12px 24px;background:var(--wh);border-bottom:1px solid var(--cm)}
+.cbar label{font-size:11px;font-weight:700;color:var(--lt);letter-spacing:.5px;text-transform:uppercase;margin-right:4px}
+.cbar select,.cbar input[type=range]{font-family:'DM Sans';font-size:11px;border:1px solid var(--cm);border-radius:5px;padding:4px 8px;background:var(--cl);color:var(--dt);cursor:pointer}
+.cbar .sep{width:1px;height:24px;background:var(--cm)}
+.filter-btns{display:flex;gap:4px}
+.fb{background:var(--cl);border:1px solid var(--cm);color:var(--mt);font-size:10.5px;padding:4px 10px;border-radius:12px;cursor:pointer;font-family:'DM Sans';font-weight:600;transition:all .18s}
+.fb.act{background:var(--g2);color:var(--wh);border-color:var(--g2)}
+.cbar .rag-key{display:flex;gap:10px;margin-left:auto;font-size:10px}
+.rk-item{display:flex;align-items:center;gap:4px}
+.rk-dot{width:8px;height:8px;border-radius:50%}
+
+/* MAIN */
+.main{padding:18px 24px}
+
+/* KPI STRIP */
+.ks{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.kc{background:var(--wh);border-radius:10px;padding:14px 16px;border:1px solid var(--cm);box-shadow:0 2px 8px rgba(44,95,45,.05);position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s;cursor:default}
+.kc:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(44,95,45,.1)}
+.kc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.kc.g::before{background:var(--g2)} .kc.o::before{background:var(--g4)} .kc.e::before{background:var(--e1)} .kc.s::before{background:var(--sn)} .kc.m::before{background:var(--g5)}
+.kl{font-size:9.5px;color:var(--lt);font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.kv{font-size:24px;font-weight:700;color:var(--g1);margin:5px 0 3px;font-family:'DM Serif Display',serif;transition:all .3s}
+.kd{font-size:10.5px;font-weight:600}
+.kd.p{color:var(--g2)} .kd.n{color:var(--rd)}
+.ks2{font-size:9.5px;color:var(--lt);margin-top:2px}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+
+/* CARD */
+.card{background:var(--wh);border-radius:10px;padding:18px;border:1px solid var(--cm);box-shadow:0 2px 8px rgba(44,95,45,.05)}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.ct{font-size:12.5px;font-weight:700;color:var(--g1)} .cs{font-size:10px;color:var(--lt);margin-top:2px}
+.badge{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:12px}
+.bg{background:#E8F5E9;color:var(--g2)} .ba{background:#FFF8E1;color:var(--e1)} .br{background:#FFEBEE;color:var(--rd)}
+
+/* TABLES */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font-size:9.5px;font-weight:700;color:var(--lt);letter-spacing:.5px;text-transform:uppercase;padding:0 8px 8px;text-align:right;border-bottom:2px solid var(--cm)}
+.tbl th:first-child{text-align:left}
+.tbl td{padding:8px 8px;font-size:11.5px;border-bottom:1px solid var(--cl);text-align:right;font-variant-numeric:tabular-nums;transition:background .2s}
+.tbl td:first-child{text-align:left}
+.tbl tr:hover td{background:var(--cl)}
+.tbl .sec td{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--lt);background:var(--cl);padding:6px 8px}
+.tbl .tot td{font-weight:700;background:var(--vn)}
+.fg{color:var(--g2);font-weight:700} .fr{color:var(--rd);font-weight:700} .fa{color:var(--am);font-weight:700}
+.pn{font-weight:600;color:var(--g1)} .ps{color:var(--mt);font-size:10.5px}
+.sub{font-size:9.5px;color:var(--lt);display:block}
+
+/* PROGRESS */
+.pl{display:flex;flex-direction:column;gap:12px}
+.pi .pt{display:flex;justify-content:space-between;margin-bottom:4px}
+.pi .lbl{font-size:11.5px;font-weight:600;color:var(--g1)}
+.pi .pct{font-size:11.5px;font-weight:700}
+.pt-bar{height:7px;background:var(--cm);border-radius:4px;overflow:hidden}
+.pt-fill{height:100%;border-radius:4px;transition:width 1s ease}
+.pi .note{font-size:9.5px;color:var(--lt);margin-top:2px}
+
+/* WATERFALL */
+.wf{display:flex;flex-direction:column;gap:7px}
+.wfr{display:flex;align-items:center;gap:10px}
+.wfl{font-size:11px;font-weight:600;color:var(--dt);width:155px;flex-shrink:0}
+.wfbw{flex:1;height:20px;background:var(--cl);border-radius:4px;overflow:hidden}
+.wfb{height:100%;border-radius:4px;display:flex;align-items:center;padding:0 7px;font-size:10px;font-weight:700;transition:width .6s ease}
+
+/* CONTROL STATUS */
+.cs-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cs-item{background:var(--cl);border-radius:7px;padding:10px 12px;border-left:4px solid var(--g2);transition:all .2s}
+.cs-item:hover{background:var(--vn)}
+.cs-item.warn{border-color:var(--am)}
+.cs-item.fail{border-color:var(--rd)}
+.cs-nm{font-size:11px;font-weight:600;color:var(--g1)}
+.cs-st{font-size:9.5px;margin-top:2px}
+.cs-ow{font-size:9px;color:var(--lt);margin-top:3px}
+
+/* VARIANCE BAR */
+.vbar-w{width:80px;height:6px;background:var(--cm);border-radius:3px;display:inline-block;vertical-align:middle;margin-right:4px}
+.vbar{height:100%;border-radius:3px;display:block}
+
+/* FOOTER */
+.ftr{background:var(--g1);color:var(--lt);font-size:9.5px;padding:9px 24px;display:flex;justify-content:space-between;margin-top:8px}
+.ftr span{color:var(--sn);font-weight:600}
+
+/* TAB CONTENT */
+.tc{display:none} .tc.act{display:block}
+
+/* TOOLTIP on KPI */
+.kc-tip{font-size:9px;color:var(--lt);margin-top:4px;border-top:1px dashed var(--cm);padding-top:4px}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="lm">🌿</div>
+    <div>
+      <div class="ht-co">Verdana Organics Uganda Ltd</div>
+      <div class="ht-rp">Phase 2 · Financial Planning &amp; Control Dashboard</div>
+    </div>
+  </div>
+  <div class="hdr-r">
+    <div class="psel">
+      <button class="pb" onclick="setPeriod('Q1',this)">Q1</button>
+      <button class="pb" onclick="setPeriod('Q2',this)">Q2</button>
+      <button class="pb" onclick="setPeriod('Q3',this)">Q3</button>
+      <button class="pb act" onclick="setPeriod('YTD',this)">YTD</button>
+    </div>
+    <div class="fybadge">FY 2025/26</div>
+    <div class="live"><span class="dot"></span> Live</div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tab act" onclick="showTab('overview',this)">📊 Overview</div>
+  <div class="tab" onclick="showTab('variance',this)">📋 Budget vs Actual</div>
+  <div class="tab" onclick="showTab('cashflow',this)">🧾 Cash Flow</div>
+  <div class="tab" onclick="showTab('controls',this)">🔒 Controls</div>
+</nav>
+
+<!-- CONTROLS BAR -->
+<div class="cbar">
+  <label>Product</label>
+  <div class="filter-btns">
+    <button class="fb act" onclick="filterProduct('all',this)">All Lines</button>
+    <button class="fb" onclick="filterProduct('vanilla',this)">🌿 Vanilla</button>
+    <button class="fb" onclick="filterProduct('coffee',this)">☕ Coffee</button>
+    <button class="fb" onclick="filterProduct('pineapple',this)">🍍 Pineapple</button>
+    <button class="fb" onclick="filterProduct('jackfruit',this)">🌱 Jackfruit</button>
+  </div>
+  <div class="sep"></div>
+  <label>View</label>
+  <select onchange="setView(this.value)" style="height:28px">
+    <option value="absolute">Absolute ($)</option>
+    <option value="margin">Margin (%)</option>
+    <option value="index">Growth Index</option>
+  </select>
+  <div class="rag-key">
+    <div class="rk-item"><div class="rk-dot" style="background:var(--g2)"></div><span>Favourable</span></div>
+    <div class="rk-item"><div class="rk-dot" style="background:var(--am)"></div><span>Monitor</span></div>
+    <div class="rk-item"><div class="rk-dot" style="background:var(--rd)"></div><span>Adverse</span></div>
+  </div>
+</div>
+
+<main class="main">
+
+<!-- ──────── OVERVIEW ──────── -->
+<div id="tab-overview" class="tc act">
+  <div class="ks">
+    <div class="kc g"><div class="kl">Revenue YTD</div><div class="kv" id="kv-rev">$2.41M</div><div class="kd p" id="kd-rev">▲ 18.4% vs PY</div><div class="ks2" id="ks-rev">Budget: $2.30M (+4.8% fav)</div></div>
+    <div class="kc o"><div class="kl">Gross Margin</div><div class="kv" id="kv-gm">38.2%</div><div class="kd p" id="kd-gm">▲ 2.1pp vs Budget</div><div class="ks2" id="ks-gm">Prior Year: 36.1%</div></div>
+    <div class="kc e"><div class="kl">OPEX YTD</div><div class="kv" id="kv-op">$680K</div><div class="kd n" id="kd-op">▼ $42K over budget</div><div class="ks2" id="ks-op">EBITDA margin: 10.1%</div></div>
+    <div class="kc s"><div class="kl">Cash Position</div><div class="kv" id="kv-ca">$214K</div><div class="kd p" id="kd-ca">▲ +$48K vs last month</div><div class="ks2" id="ks-ca">Runway: 4.2 months</div></div>
+    <div class="kc m"><div class="kl">Working Capital</div><div class="kv" id="kv-wc">1.84×</div><div class="kd p" id="kd-wc">▲ Above 1.5× target</div><div class="ks2" id="ks-wc">A/R $312K | A/P $188K</div></div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Revenue by Product – Monthly Trend</div><div class="cs">Vanilla · Coffee · Pineapple · Jackfruit · Click legend to isolate</div></div><span class="badge bg" id="rev-status">On Track</span></div>
+      <canvas id="revChart" height="200"></canvas>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Cost Structure – YTD Breakdown</div><div class="cs">Click segments to drill down</div></div><span class="badge ba">Review OPEX</span></div>
+      <canvas id="costChart" height="200"></canvas>
+    </div>
+  </div>
+
+  <div class="g3">
+    <div class="card">
+      <div class="ch"><div><div class="ct">P&amp;L Waterfall – YTD Bridge</div><div class="cs">Revenue → Gross Profit → EBITDA → Net</div></div><span class="badge bg">EBITDA $244K</span></div>
+      <div class="wf" style="margin-top:6px">
+        <div class="wfr"><div class="wfl">Revenue</div><div class="wfbw"><div class="wfb" style="width:100%;background:var(--g2);color:var(--wh)" id="wf1">$2,410K</div></div></div>
+        <div class="wfr"><div class="wfl">− Cost of Goods Sold</div><div class="wfbw"><div class="wfb" style="width:62%;background:var(--e1);color:var(--wh)" id="wf2">(−$1,489K)</div></div></div>
+        <div class="wfr"><div class="wfl">= Gross Profit</div><div class="wfbw"><div class="wfb" style="width:38%;background:var(--g5);color:var(--g1)" id="wf3">$921K</div></div></div>
+        <div class="wfr"><div class="wfl">− Operating Expenses</div><div class="wfbw"><div class="wfb" style="width:28%;background:var(--sn);color:var(--g1)" id="wf4">(−$680K)</div></div></div>
+        <div class="wfr"><div class="wfl">= EBITDA</div><div class="wfbw"><div class="wfb" style="width:10%;background:var(--g3);color:var(--wh)" id="wf5">$241K</div></div></div>
+        <div class="wfr"><div class="wfl">− D&amp;A + Interest</div><div class="wfbw"><div class="wfb" style="width:5%;background:var(--e2);color:var(--wh)" id="wf6">(−$118K)</div></div></div>
+        <div class="wfr"><div class="wfl">= Net Profit</div><div class="wfbw"><div class="wfb" style="width:5%;background:var(--g1);color:var(--vn)" id="wf7">$123K</div></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Budget Utilisation</div><div class="cs">Spend vs approved annual budget</div></div></div>
+      <div class="pl" id="budgetUtil">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+</div><!-- /overview -->
+
+<!-- ──────── VARIANCE ──────── -->
+<div id="tab-variance" class="tc">
+  <div class="g2" style="margin-bottom:16px">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Budget vs Actual – Revenue</div><div class="cs">Monthly rolling comparison · Click bars to inspect</div></div><span class="badge bg" id="v-badge">+4.8% Favourable</span></div>
+      <canvas id="baChart" height="220"></canvas>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Expense Variance by Category</div><div class="cs">YTD actual vs budget · Positive = under budget (favourable)</div></div><span class="badge ba">3 lines adverse</span></div>
+      <canvas id="varChart" height="220"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><div><div class="ct">Detailed Line-Item Variance Analysis</div><div class="cs">YTD · Nov 2025 · USD '000 · Click row to expand commentary</div></div><span class="badge bg">Auto-updated</span></div>
+    <table class="tbl" id="varTable">
+      <thead><tr><th style="width:26%">Line Item</th><th>Budget YTD</th><th>Actual YTD</th><th>Var $K</th><th>Var %</th><th style="width:110px">Visual</th><th>Status</th></tr></thead>
+      <tbody id="varBody"></tbody>
+    </table>
+  </div>
+</div><!-- /variance -->
+
+<!-- ──────── CASHFLOW ──────── -->
+<div id="tab-cashflow" class="tc">
+  <div class="ks" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kc g"><div class="kl">Opening Balance</div><div class="kv">$166K</div><div class="ks2">Apr 2025 – start of FY</div></div>
+    <div class="kc s"><div class="kl">Net Operating CF</div><div class="kv">+$198K</div><div class="kd p">YTD 6 months</div></div>
+    <div class="kc e"><div class="kl">Capital Expenditure</div><div class="kv">−$96K</div><div class="ks2">Equipment upgrade</div></div>
+    <div class="kc m"><div class="kl">Closing Balance</div><div class="kv">$214K</div><div class="kd p">▲ +$48K MoM</div></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Cash Flow – Actual vs 12-Month Forecast</div><div class="cs">Toggle: Hover data points · Dashed = forecast</div></div>
+        <div style="display:flex;gap:6px">
+          <button class="fb act" onclick="toggleCF('both',this)">Both</button>
+          <button class="fb" onclick="toggleCF('actual',this)">Actual</button>
+          <button class="fb" onclick="toggleCF('forecast',this)">Forecast</button>
+        </div>
+      </div>
+      <canvas id="cfChart" height="230"></canvas>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Working Capital Components</div><div class="cs">A/R · Inventory · A/P – monthly ($K)</div></div></div>
+      <canvas id="wcChart" height="230"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><div><div class="ct">Cash Flow Statement – 6 Months</div><div class="cs">Apr–Nov 2025 · USD</div></div></div>
+    <div style="overflow-x:auto">
+    <table class="tbl">
+      <thead><tr><th style="width:22%;text-align:left">Category</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Nov</th><th>YTD</th></tr></thead>
+      <tbody>
+        <tr class="sec"><td colspan="8">Operating Activities</td></tr>
+        <tr><td class="pn">Export receipts</td><td class="fg">$312</td><td class="fg">$398</td><td class="fg">$418</td><td class="fg">$360</td><td class="fg">$402</td><td class="fg">$440</td><td class="fg"><b>$2,330</b></td></tr>
+        <tr><td class="ps">Farmer payments</td><td class="fr">−$142</td><td class="fr">−$158</td><td class="fr">−$162</td><td class="fr">−$128</td><td class="fr">−$138</td><td class="fr">−$150</td><td class="fr">−$878</td></tr>
+        <tr><td class="ps">Processing costs</td><td class="fr">−$68</td><td class="fr">−$72</td><td class="fr">−$74</td><td class="fr">−$70</td><td class="fr">−$78</td><td class="fr">−$80</td><td class="fr">−$442</td></tr>
+        <tr><td class="ps">Operating expenses</td><td class="fr">−$88</td><td class="fr">−$102</td><td class="fr">−$98</td><td class="fr">−$110</td><td class="fr">−$118</td><td class="fr">−$122</td><td class="fr">−$638</td></tr>
+        <tr class="tot"><td>Net Operating CF</td><td class="fg">+$14</td><td class="fg">+$66</td><td class="fg">+$84</td><td class="fg">+$52</td><td class="fg">+$68</td><td class="fg">+$88</td><td class="fg"><b>+$372</b></td></tr>
+        <tr class="sec"><td colspan="8">Investing &amp; Financing</td></tr>
+        <tr><td class="ps">Capital expenditure</td><td class="fr">−$22</td><td>–</td><td class="fr">−$40</td><td class="fr">−$34</td><td>–</td><td>–</td><td class="fr">−$96</td></tr>
+        <tr><td class="ps">Loan repayment</td><td class="fr">−$8</td><td class="fr">−$8</td><td class="fr">−$8</td><td class="fr">−$8</td><td class="fr">−$8</td><td class="fr">−$8</td><td class="fr">−$48</td></tr>
+        <tr class="tot"><td>Closing Cash Balance</td><td>$150</td><td>$208</td><td>$244</td><td>$254</td><td>$314</td><td><b>$394</b></td><td class="fg"><b>$394</b></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div><!-- /cashflow -->
+
+<!-- ──────── CONTROLS ──────── -->
+<div id="tab-controls" class="tc">
+  <div class="ks" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kc g"><div class="kl">Controls Active</div><div class="kv">14/18</div><div class="kd p">78% coverage</div></div>
+    <div class="kc e"><div class="kl">Open Findings</div><div class="kv">3</div><div class="kd p">▼ Down from 7 last FY</div></div>
+    <div class="kc m"><div class="kl">Pending Approvals</div><div class="kv">2</div><div class="ks2">Within 48hr SLA</div></div>
+    <div class="kc o"><div class="kl">Segregation of Duties</div><div class="kv">✓ Active</div><div class="ks2">4-eye principle</div></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Control Status Matrix</div><div class="cs">Click any control to toggle review status</div></div><span class="badge bg">14/18 Operational</span></div>
+      <div class="cs-grid" id="controlGrid"></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Authorisation Thresholds</div><div class="cs">Segregation of duties framework</div></div></div>
+      <canvas id="authChart" height="200"></canvas>
+      <table class="tbl" style="margin-top:12px">
+        <thead><tr><th style="text-align:left">Transaction</th><th style="text-align:left">Limit</th><th style="text-align:left">Approver</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="pn">Petty cash</td><td>&lt;$50</td><td>Officer</td><td><span class="badge bg">✓</span></td></tr>
+          <tr><td class="pn">Purchases</td><td>$50–$500</td><td>Supervisor + Finance</td><td><span class="badge bg">✓</span></td></tr>
+          <tr><td class="pn">Vendor payments</td><td>$500–$5K</td><td>Finance Manager</td><td><span class="badge bg">✓</span></td></tr>
+          <tr><td class="pn">Capital spend</td><td>$5K–$25K</td><td>CFO + CEO</td><td><span class="badge bg">✓</span></td></tr>
+          <tr><td class="pn">Major commitments</td><td>&gt;$25K</td><td>Board Approval</td><td><span class="badge ba">Formalising</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- /controls -->
+
+</main>
+
+<footer class="ftr">
+  <div>Phase 2 · Financial Planning &amp; Control · <span>Verdana Organics Uganda Ltd</span> · <span>⚡ Power BI Portfolio Showcase</span></div>
+  <div>Data: <span>30 Nov 2025 · Illustrative</span> · Advisor: <span>Ronald K. · Finance &amp; Analytics</span></div>
+</footer>
+
+<script>
+// ────────────────────────────────────────────────
+// DATA ENGINE
+// ────────────────────────────────────────────────
+const DATA = {
+  Q1:{ rev:744, gm:45.2, op:330, ca:166, wc:1.72,
+    monthly:{ vanilla:[80,92,105], coffee:[60,68,72], pineapple:[28,30,32], jackfruit:[10,12,14] },
+    labels:['Apr','May','Jun'],
+    kpi:{ rev:'$744K', gm:'45.2%', op:'$330K', ca:'$166K', wc:'1.72×' },
+    delta:{ rev:'▲ 12.0% vs PY', gm:'▲ 1.2pp vs Budget', op:'Under budget $8K', ca:'+$14K this qtr', wc:'Above 1.5× target' }
+  },
+  Q2:{ rev:820, gm:40.1, op:350, ca:250, wc:1.80,
+    monthly:{ vanilla:[130,148,168], coffee:[88,96,108], pineapple:[30,30,36], jackfruit:[14,16,18] },
+    labels:['Jul','Aug','Sep'],
+    kpi:{ rev:'$820K', gm:'40.1%', op:'$350K', ca:'$250K', wc:'1.80×' },
+    delta:{ rev:'▲ 14.2% vs PY', gm:'▲ 1.8pp vs Q1', op:'On budget', ca:'+$84K this qtr', wc:'Above 1.5× target' }
+  },
+  Q3:{ rev:847, gm:38.8, op:360, ca:214, wc:1.84,
+    monthly:{ vanilla:[148,162,178], coffee:[108,118,130], pineapple:[32,34,38], jackfruit:[16,18,20] },
+    labels:['Oct','Nov','Dec*'],
+    kpi:{ rev:'$847K', gm:'38.8%', op:'$360K', ca:'$214K', wc:'1.84×' },
+    delta:{ rev:'▲ 16.1% vs PY', gm:'▲ 0.5pp vs Q2', op:'$22K over budget', ca:'Forecast only', wc:'Healthy' }
+  },
+  YTD:{ rev:2411, gm:38.2, op:680, ca:214, wc:1.84,
+    monthly:{ vanilla:[80,92,105,130,148,168,148,162,178,210,240,260],coffee:[60,68,72,88,96,108,108,118,130,122,135,145],pineapple:[28,30,32,30,30,36,32,34,38,28,35,40],jackfruit:[10,12,14,14,16,18,16,18,20,14,18,22] },
+    labels:['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec*','Jan*','Feb*','Mar*'],
+    kpi:{ rev:'$2.41M', gm:'38.2%', op:'$680K', ca:'$214K', wc:'1.84×' },
+    delta:{ rev:'▲ 18.4% vs PY', gm:'▲ 2.1pp vs Budget', op:'$42K over budget', ca:'Runway: 4.2 months', wc:'A/R $312K | A/P $188K' }
+  }
+};
+
+let currentPeriod = 'YTD';
+let currentProduct = 'all';
+let currentView = 'absolute';
+
+// ────── CHART SETUP ──────
+const C={g1:'#1C3A1E',g2:'#2C5F2D',g3:'#3D7A40',g4:'#5C8C3A',g5:'#7EAB52',e1:'#8B5E3C',e2:'#C4956A',sn:'#D4A96A',vn:'#F5E6C8',rd:'#C0392B',am:'#E67E22',lt:'#7A8C7A',cm:'#E5DDD3'};
+const baseFont={family:'DM Sans',size:10};
+const gridColor='#E5DDD3';
+
+// REVENUE CHART
+const revCtx=document.getElementById('revChart').getContext('2d');
+const revChart=new Chart(revCtx,{
+  type:'bar',
+  data:{labels:[],datasets:[
+    {label:'Vanilla', data:[],backgroundColor:C.g2,borderRadius:3},
+    {label:'Coffee',  data:[],backgroundColor:C.g3,borderRadius:3},
+    {label:'Pineapple',data:[],backgroundColor:C.e1,borderRadius:3},
+    {label:'Jackfruit',data:[],backgroundColor:C.sn,borderRadius:3}
+  ]},
+  options:{responsive:true,maintainAspectRatio:true,interaction:{mode:'index'},animation:{duration:600},
+    plugins:{legend:{labels:{font:baseFont,color:C.lt}}},
+    scales:{x:{stacked:true,grid:{display:false},ticks:{font:baseFont,color:C.lt}},
+      y:{stacked:true,grid:{color:gridColor},ticks:{font:baseFont,color:C.lt,callback:v=>'$'+v+'K'}}}}
+});
+
+// COST PIE
+const costCtx=document.getElementById('costChart').getContext('2d');
+const costChart=new Chart(costCtx,{
+  type:'doughnut',
+  data:{labels:['Farmer Pmts','Processing','Payroll','Logistics','Marketing','Admin'],
+    datasets:[{data:[49,17,13,7,3,11],backgroundColor:[C.g2,C.g3,C.g4,C.e1,C.sn,C.g5],borderWidth:2,borderColor:'#FAF7F2'}]},
+  options:{responsive:true,maintainAspectRatio:true,cutout:'62%',animation:{animateRotate:true,duration:600},
+    plugins:{legend:{position:'right',labels:{font:baseFont,color:C.lt,padding:12,boxWidth:10}},
+      tooltip:{callbacks:{label:c=>' '+c.label+': '+c.raw+'%'}}}}
+});
+
+// BUDGET vs ACTUAL
+const baCtx=document.getElementById('baChart').getContext('2d');
+const baChart=new Chart(baCtx,{
+  type:'bar',
+  data:{labels:['Jun','Jul','Aug','Sep','Oct','Nov'],
+    datasets:[
+      {label:'Budget',data:[320,300,325,340,330,355],backgroundColor:C.cm,borderRadius:3},
+      {label:'Actual',data:[350,310,340,362,355,380],backgroundColor:C.g2,borderRadius:3}
+    ]},
+  options:{responsive:true,maintainAspectRatio:true,animation:{duration:500},
+    plugins:{legend:{labels:{font:baseFont,color:C.lt}},
+      tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.raw+'K'}}},
+    scales:{x:{grid:{display:false},ticks:{font:baseFont,color:C.lt}},
+      y:{grid:{color:gridColor},ticks:{font:baseFont,color:C.lt,callback:v=>'$'+v+'K'}}}}
+});
+
+// VARIANCE BAR
+const varCtx=document.getElementById('varChart').getContext('2d');
+const varChart=new Chart(varCtx,{
+  type:'bar',
+  data:{labels:['Farmer Pmts','Processing','Packaging','Logistics','Payroll','Admin','Marketing','Certif.'],
+    datasets:[{label:'Variance ($K)',data:[6,-35,-7,10,-16,6,-6,2],
+      backgroundColor:[6,-35,-7,10,-16,6,-6,2].map(v=>v>=0?C.g2:C.rd),borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:true,indexAxis:'y',animation:{duration:500},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(c.raw>=0?'+':'')+c.raw+'K'}}},
+    scales:{y:{grid:{display:false},ticks:{font:baseFont,color:C.lt}},
+      x:{grid:{color:gridColor},ticks:{font:baseFont,color:C.lt,callback:v=>(v>=0?'+':'')+v+'K'}}}}
+});
+
+// CASHFLOW
+const cfCtx=document.getElementById('cfChart').getContext('2d');
+const cfChart=new Chart(cfCtx,{
+  type:'line',
+  data:{labels:['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec*','Jan*','Feb*','Mar*'],
+    datasets:[
+      {label:'Cash Balance ($K)',data:[166,180,208,254,220,280,330,394,380,420,460,490],borderColor:C.g2,backgroundColor:C.g2+'22',borderWidth:2.5,fill:true,tension:.35,pointBackgroundColor:C.g2,pointRadius:4},
+      {label:'Min Reserve ($K)', data:Array(12).fill(100),borderColor:C.rd,borderDash:[6,4],borderWidth:1.5,fill:false,pointRadius:0}
+    ]},
+  options:{responsive:true,maintainAspectRatio:true,
+    plugins:{legend:{labels:{font:baseFont,color:C.lt}}},
+    scales:{x:{grid:{display:false},ticks:{font:baseFont,color:C.lt}},
+      y:{grid:{color:gridColor},ticks:{font:baseFont,color:C.lt,callback:v=>'$'+v+'K'}}}}
+});
+
+// WORKING CAPITAL
+const wcCtx=document.getElementById('wcChart').getContext('2d');
+const wcChart=new Chart(wcCtx,{
+  type:'bar',
+  data:{labels:['Jun','Jul','Aug','Sep','Oct','Nov'],
+    datasets:[
+      {label:'Accounts Receivable',data:[280,295,260,302,290,312],backgroundColor:C.g3,borderRadius:3},
+      {label:'Inventory',data:[180,165,195,175,162,155],backgroundColor:C.g4,borderRadius:3},
+      {label:'Accounts Payable',data:[-145,-162,-170,-155,-178,-188],backgroundColor:C.e1,borderRadius:3}
+    ]},
+  options:{responsive:true,maintainAspectRatio:true,
+    plugins:{legend:{labels:{font:baseFont,color:C.lt}}},
+    scales:{x:{grid:{display:false},ticks:{font:baseFont,color:C.lt}},
+      y:{grid:{color:gridColor},ticks:{font:baseFont,color:C.lt,callback:v=>'$'+Math.abs(v)+'K'}}}}
+});
+
+// AUTH CHART
+const authCtx=document.getElementById('authChart').getContext('2d');
+new Chart(authCtx,{
+  type:'doughnut',
+  data:{labels:['Operational (14)','In Progress (2)','Overdue (2)'],
+    datasets:[{data:[78,11,11],backgroundColor:[C.g2,C.sn,C.rd],borderWidth:2,borderColor:'#FAF7F2'}]},
+  options:{responsive:true,maintainAspectRatio:true,cutout:'68%',
+    plugins:{legend:{position:'bottom',labels:{font:baseFont,color:C.lt,padding:10,boxWidth:10}}}}
+});
+
+// ────── VARIANCE TABLE ──────
+const varRows=[
+  {cat:'REVENUE',isSection:true},
+  {name:'Vanilla Exports',sub:'Kayunga facility',bud:1150,act:1260,status:'fg',badge:'bg',badgeTxt:'✓ Fav'},
+  {name:'Arabica Coffee',sub:'Sipi station',bud:740,act:790,status:'fg',badge:'bg',badgeTxt:'✓ Fav'},
+  {name:'Dried Pineapple',sub:'Kangulumira',bud:280,act:245,status:'fr',badge:'br',badgeTxt:'✗ Adv'},
+  {name:'Jackfruit',sub:'New line',bud:130,act:115,status:'fa',badge:'ba',badgeTxt:'△ Mon'},
+  {name:'Total Revenue',isTotal:true,bud:2300,act:2410,status:'fg',badge:'bg',badgeTxt:'✓ Fav'},
+  {cat:'COST OF GOODS SOLD',isSection:true},
+  {name:'Farmer Payments',sub:'4,600+ farmers',bud:820,act:814,status:'fg',badge:'bg',badgeTxt:'✓ Fav'},
+  {name:'Processing Costs',bud:410,act:445,status:'fa',badge:'ba',badgeTxt:'△ Mon'},
+  {name:'Packaging & Quality',bud:185,act:192,status:'fa',badge:'ba',badgeTxt:'△ Min'},
+  {name:'Logistics & Freight',bud:120,act:110,status:'fg',badge:'bg',badgeTxt:'✓ Fav'},
+  {cat:'OPERATING EXPENSES',isSection:true},
+  {name:'Staff & Payroll',bud:195,act:211,status:'fa',badge:'ba',badgeTxt:'△ Rev'},
+  {name:'Admin & Overhead',bud:88,act:82,status:'fg',badge:'bg',badgeTxt:'✓ Fav'},
+  {name:'Marketing & BD',bud:50,act:56,status:'fr',badge:'br',badgeTxt:'✗ Over'},
+];
+function buildVarTable(){
+  const tb=document.getElementById('varBody');
+  tb.innerHTML='';
+  varRows.forEach(r=>{
+    if(r.isSection){
+      const tr=document.createElement('tr');tr.className='sec';
+      tr.innerHTML=`<td colspan="7">${r.cat}</td>`;tb.appendChild(tr);return;
+    }
+    const vd=r.act-r.bud; const vp=((vd/r.bud)*100).toFixed(1);
+    const barW=Math.min(100,Math.abs(vd/50*40));
+    const barC=vd>=0?'var(--g2)':'var(--rd)';
+    const tr=document.createElement('tr');
+    if(r.isTotal)tr.className='tot';
+    tr.innerHTML=`
+      <td><span class="${r.isTotal?'':'pn'}">${r.name}</span>${r.sub?'<span class="sub">'+r.sub+'</span>':''}</td>
+      <td>$${r.bud}</td><td>$${r.act}</td>
+      <td class="${r.status}">${vd>=0?'+':''}$${vd}</td>
+      <td class="${r.status}">${vd>=0?'+':''}${vp}%</td>
+      <td><span class="vbar-w"><span class="vbar" style="width:${barW}%;background:${barC}"></span></span></td>
+      <td><span class="badge ${r.badge}">${r.badgeTxt}</span></td>`;
+    tb.appendChild(tr);
+  });
+}
+buildVarTable();
+
+// ────── CONTROLS GRID ──────
+const controls=[
+  {name:'PO authorisation',owner:'CFO',date:'Nov 2025',status:'ok'},
+  {name:'Bank reconciliation',owner:'Finance',date:'Nov 2025',status:'ok'},
+  {name:'Farmer payment flow',owner:'Ops + CFO',date:'Oct 2025',status:'ok'},
+  {name:'Expense dual approval',owner:'Finance',date:'Oct 2025',status:'ok'},
+  {name:'Journal entry sign-off',owner:'CFO',date:'Nov 2025',status:'ok'},
+  {name:'Payroll 4-eye check',owner:'HR + CFO',date:'Nov 2025',status:'ok'},
+  {name:'Fixed asset register',owner:'Finance',date:'Sep 2025',status:'warn'},
+  {name:'Intercompany recon',owner:'CFO',date:'Aug 2025',status:'warn'},
+  {name:'Inventory count',owner:'Ops',date:'Jun 2025',status:'fail'},
+  {name:'Budget reforecast',owner:'Finance',date:'Oct 2025',status:'ok'},
+];
+function buildControls(){
+  const g=document.getElementById('controlGrid');
+  g.innerHTML='';
+  controls.forEach((c,i)=>{
+    const d=document.createElement('div');
+    d.className='cs-item'+(c.status==='warn'?' warn':c.status==='fail'?' fail':'');
+    d.innerHTML=`<div class="cs-nm">${c.name}</div>
+      <div class="cs-st ${c.status==='ok'?'fg':c.status==='warn'?'fa':'fr'}">${c.status==='ok'?'✓ Operational':c.status==='warn'?'△ In Progress':'✗ Overdue'}</div>
+      <div class="cs-ow">Owner: ${c.owner} · ${c.date}</div>`;
+    d.onclick=()=>{
+      controls[i].status=controls[i].status==='ok'?'warn':controls[i].status==='warn'?'fail':'ok';
+      buildControls();
+    };
+    g.appendChild(d);
+  });
+}
+buildControls();
+
+// ────── BUDGET UTIL ──────
+const budgets=[
+  {l:'Farmer Payments',pct:74,note:'$814K of $1.1M',c:'var(--g2)'},
+  {l:'Processing & Ops',pct:68,note:'$272K of $400K',c:'var(--g3)'},
+  {l:'Staff & Payroll',pct:81,note:'$211K of $260K – review',c:'var(--g4)'},
+  {l:'Logistics & Export',pct:55,note:'$110K of $200K',c:'var(--e1)'},
+  {l:'Marketing & BD',pct:112,note:'$56K of $50K – OVER',c:'var(--rd)'},
+];
+function buildBudget(){
+  const c=document.getElementById('budgetUtil');
+  c.innerHTML='';
+  budgets.forEach(b=>{
+    const pct=Math.min(b.pct,100);
+    c.innerHTML+=`<div class="pi">
+      <div class="pt"><span class="lbl">${b.l}</span><span class="pct ${b.pct>100?'fr':b.pct>80?'fa':'fg'}">${b.pct}%</span></div>
+      <div class="pt-bar"><div class="pt-fill" style="width:${pct}%;background:${b.c}"></div></div>
+      <div class="note">${b.note}</div>
+    </div>`;
+  });
+}
+buildBudget();
+
+// ────── PERIOD SWITCH ──────
+function setPeriod(p,btn){
+  currentPeriod=p;
+  document.querySelectorAll('.pb').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  const d=DATA[p];
+  ['rev','gm','op','ca','wc'].forEach((k)=>{
+    document.getElementById('kv-'+k).textContent=d.kpi[k];
+    document.getElementById('kd-'+k).textContent=d.delta[k];
+  });
+  revChart.data.labels=d.labels;
+  ['vanilla','coffee','pineapple','jackfruit'].forEach((pr,i)=>{
+    revChart.data.datasets[i].data=currentProduct==='all'||currentProduct===pr?d.monthly[pr]:d.monthly[pr].map(()=>0);
+  });
+  revChart.update('active');
+}
+
+// ────── PRODUCT FILTER ──────
+function filterProduct(p,btn){
+  currentProduct=p;
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  const d=DATA[currentPeriod];
+  ['vanilla','coffee','pineapple','jackfruit'].forEach((pr,i)=>{
+    revChart.data.datasets[i].data=p==='all'||p===pr?d.monthly[pr]:d.monthly[pr].map(()=>0);
+  });
+  revChart.update('active');
+}
+
+// ────── VIEW TOGGLE ──────
+function setView(v){currentView=v;}
+
+// ────── CF TOGGLE ──────
+function toggleCF(t,btn){
+  document.querySelectorAll('.filter-btns .fb').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  cfChart.data.datasets[0].hidden=(t==='forecast');
+  cfChart.data.datasets[1].hidden=(t==='actual');
+  cfChart.update();
+}
+
+// ────── TABS ──────
+function showTab(id,el){
+  document.querySelectorAll('.tc').forEach(t=>t.classList.remove('act'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('act'));
+  document.getElementById('tab-'+id).classList.add('act');
+  el.classList.add('act');
+}
+
+// Init revenue chart with YTD data
+setPeriod('YTD', document.querySelector('.pb.act'));
+</script>
+</body>
+</html>

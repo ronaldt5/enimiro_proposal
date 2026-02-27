@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Verdana Organics – Investor Reporting Package</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --g1:#1C3A1E;--g2:#2C5F2D;--g3:#3D7A40;--g4:#5C8C3A;--g5:#7EAB52;
+  --cr:#F2EDE4;--cl:#FAF7F2;--cm:#E5DDD3;
+  --e1:#8B5E3C;--e2:#C4956A;--sn:#D4A96A;--vn:#F5E6C8;
+  --dt:#1C2B1E;--mt:#4A5C4A;--lt:#7A8C7A;--wh:#FFFFFF;
+  --rd:#C0392B;--am:#E67E22;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cl);color:var(--dt)}
+
+/* COVER */
+.cover{background:var(--g1);display:grid;grid-template-columns:1fr 300px;min-height:135px}
+.cvl{padding:22px 28px;border-right:1px solid #2C5F2D}
+.clabel{font-size:9.5px;letter-spacing:4px;text-transform:uppercase;color:var(--sn);font-weight:600;margin-bottom:5px}
+.ctitle{font-family:'Playfair Display',serif;font-size:26px;color:var(--wh);font-weight:700;line-height:1.2}
+.csub{font-size:12px;color:var(--cr);margin-top:7px;opacity:.85}
+.ctags{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}
+.ctag{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);color:var(--vn);font-size:9.5px;padding:3px 9px;border-radius:12px;font-weight:500}
+.cvr{padding:18px 22px;display:flex;flex-direction:column;justify-content:space-between}
+.cmeta{color:var(--lt);font-size:10.5px;line-height:1.85}
+.cmeta strong{color:var(--sn)}
+.qsel{display:flex;gap:4px;margin-top:8px}
+.qb{background:none;border:1px solid rgba(255,255,255,.2);color:var(--cr);font-size:11px;padding:5px 12px;border-radius:4px;cursor:pointer;font-family:'DM Sans';transition:all .18s}
+.qb.act{background:var(--sn);color:var(--g1);border-color:var(--sn);font-weight:700}
+.strip{height:4px;background:linear-gradient(90deg,var(--g2) 0%,var(--g4) 50%,var(--sn) 100%)}
+
+/* TABS */
+.tabs{display:flex;background:var(--cm);border-bottom:1px solid #D4CBBC;padding:0 24px}
+.tab{padding:10px 16px;font-size:12px;font-weight:600;cursor:pointer;color:var(--mt);border-bottom:3px solid transparent;transition:all .18s}
+.tab.act{color:var(--g2);border-color:var(--g2);background:var(--cl)}
+
+/* ACTIONS BAR */
+.abar{display:flex;align-items:center;gap:10px;padding:9px 24px;background:var(--wh);border-bottom:1px solid var(--cm)}
+.abar-l{font-size:11px;color:var(--lt);font-weight:600}
+.abtn{background:var(--cl);border:1px solid var(--cm);color:var(--mt);font-size:10.5px;padding:5px 12px;border-radius:5px;cursor:pointer;font-family:'DM Sans';font-weight:600;transition:all .18s;display:flex;align-items:center;gap:5px}
+.abtn:hover{background:var(--g2);color:var(--wh);border-color:var(--g2)}
+.abtn.primary{background:var(--g2);color:var(--wh);border-color:var(--g2)}
+.abtn.primary:hover{background:var(--g1)}
+.spacer{flex:1}
+.period-badge{background:var(--vn);color:var(--g1);font-size:10px;font-weight:700;padding:4px 12px;border-radius:12px;letter-spacing:.5px}
+
+/* MAIN */
+.main{padding:18px 24px}
+
+/* KPI BAND */
+.kb{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;margin-bottom:18px}
+.kc{background:var(--wh);border-radius:9px;padding:13px 15px;border:1px solid var(--cm);box-shadow:0 1px 6px rgba(44,95,45,.05);border-left:4px solid var(--g2);transition:all .15s;cursor:pointer}
+.kc:hover{box-shadow:0 4px 16px rgba(44,95,45,.1);transform:translateY(-1px)}
+.kc.e{border-color:var(--e1)} .kc.s{border-color:var(--sn)} .kc.o{border-color:var(--g4)} .kc.m{border-color:var(--g5)} .kc.i{border-color:var(--g3);background:var(--cl)}
+.kl{font-size:9px;font-weight:700;color:var(--lt);letter-spacing:.5px;text-transform:uppercase}
+.kv{font-size:21px;font-weight:700;color:var(--g1);margin:4px 0 2px;font-family:'Playfair Display',serif;transition:all .3s}
+.kchg{font-size:10px;font-weight:600}
+.kchg.p{color:var(--g2)} .kchg.n{color:var(--rd)}
+.knote{font-size:9px;color:var(--lt);margin-top:1px}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px}
+
+/* CARD */
+.card{background:var(--wh);border-radius:10px;padding:18px;border:1px solid var(--cm);box-shadow:0 2px 8px rgba(44,95,45,.05)}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.ct{font-size:12.5px;font-weight:700;color:var(--g1)} .cs{font-size:10px;color:var(--lt);margin-top:2px}
+.badge{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:12px}
+.bg{background:#E8F5E9;color:var(--g2)} .ba{background:#FFF8E1;color:var(--e1)} .br{background:#FFEBEE;color:var(--rd)} .bb{background:#E3F2FD;color:#1565C0}
+
+/* PnL TABLE */
+.pnl{width:100%;border-collapse:collapse}
+.pnl th{font-size:9.5px;font-weight:700;color:var(--lt);letter-spacing:.4px;text-transform:uppercase;padding:0 8px 8px;text-align:right;border-bottom:2px solid var(--cm)}
+.pnl th:first-child{text-align:left}
+.pnl td{padding:7px 8px;font-size:11.5px;border-bottom:1px solid var(--cl);text-align:right;font-variant-numeric:tabular-nums;transition:background .2s}
+.pnl td:first-child{text-align:left}
+.pnl tr:hover td{background:var(--cl)}
+.pnl .ps{color:var(--mt);font-size:10.5px}
+.pnl .pn{font-weight:600;color:var(--g1)}
+.pnl .sec td{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--lt);background:var(--cl);padding:5px 8px}
+.pnl .tot td{font-weight:700;background:var(--vn)}
+.pos{color:var(--g2)} .neg{color:var(--rd)}
+
+/* MILESTONES */
+.ms-list{display:flex;flex-direction:column;gap:9px}
+.ms-row{display:flex;gap:12px;align-items:flex-start}
+.ms-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--wh);margin-top:1px;cursor:pointer;transition:all .2s}
+.ms-dot.done{background:var(--g2)} .ms-dot.prog{background:var(--sn);color:var(--g1)} .ms-dot.plan{background:var(--cm);color:var(--lt)}
+.ms-dot:hover{transform:scale(1.15)}
+.ms-t{font-size:12px;font-weight:600;color:var(--g1)} .ms-s{font-size:10px;color:var(--lt);margin-top:1px}
+
+/* IMPACT CARDS */
+.ig{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.ic{border-radius:10px;padding:16px;color:var(--wh);position:relative;overflow:hidden}
+.ic::before{content:attr(data-icon);position:absolute;right:12px;top:10px;font-size:26px;opacity:.3}
+.ic.f{background:linear-gradient(135deg,var(--g2),var(--g3))}
+.ic.e{background:linear-gradient(135deg,var(--e1),var(--e2))}
+.ic.d{background:linear-gradient(135deg,var(--g1),var(--g2))}
+.il{font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;opacity:.75}
+.iv{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;margin:5px 0 3px}
+.id{font-size:10.5px;opacity:.85}
+.ip{height:4px;background:rgba(255,255,255,.25);border-radius:2px;margin-top:10px}
+.ipf{height:100%;background:rgba(255,255,255,.7);border-radius:2px}
+
+/* USE OF FUNDS */
+.uof-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.uof-l{font-size:11.5px;font-weight:600;color:var(--g1);width:175px;flex-shrink:0}
+.uof-bw{flex:1;height:20px;background:var(--cm);border-radius:4px;overflow:hidden}
+.uof-b{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;font-size:10px;font-weight:700;transition:width .8s ease}
+.uof-m{font-size:9.5px;color:var(--lt);width:95px;text-align:right;flex-shrink:0}
+
+/* RISK TABLE */
+.rtbl{width:100%;border-collapse:collapse}
+.rtbl th{font-size:9.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--lt);padding:0 8px 8px;border-bottom:2px solid var(--cm);text-align:left}
+.rtbl td{padding:9px 8px;font-size:11.5px;border-bottom:1px solid var(--cl);vertical-align:top;transition:background .2s}
+.rtbl tr:hover td{background:var(--cl)}
+.rnm{font-weight:600;color:var(--g1);display:block} .rsb{font-size:9.5px;color:var(--lt)}
+.rp{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:12px;display:inline-block}
+.r-h{background:#FFEBEE;color:var(--rd)} .r-m{background:#FFF8E1;color:#B7791F} .r-l{background:#E8F5E9;color:var(--g2)}
+
+/* SDG */
+.sdg-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.sdg{font-size:10px;font-weight:700;padding:4px 11px;border-radius:6px}
+
+/* CEO QUOTE */
+.quote{font-size:12px;line-height:1.7;color:var(--mt);font-style:italic;border-left:3px solid var(--sn);padding-left:12px;margin-bottom:12px}
+
+/* FOOTER */
+.ftr{background:var(--g1);color:var(--lt);font-size:9.5px;padding:9px 24px;display:flex;justify-content:space-between;margin-top:8px}
+.ftr span{color:var(--sn);font-weight:600}
+
+/* TAB CONTENT */
+.tc{display:none} .tc.act{display:block}
+
+@media print{.tabs,.abar,.qsel,.abtn{display:none}.main{padding:10px}.cover{min-height:100px}}
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="cvl">
+    <div class="clabel">Phase 3 · Investor &amp; Management Reporting</div>
+    <div class="ctitle">Verdana Organics Uganda Ltd<br/>Quarterly Investor Report</div>
+    <div class="csub" id="cover-sub">Q2 FY2025/26 · October – December 2025 · Board &amp; Investor Distribution</div>
+    <div class="ctags">
+      <span class="ctag">🌿 EU Organic Certified</span>
+      <span class="ctag">☕ Fairtrade Pending</span>
+      <span class="ctag">🌾 USDA Organic</span>
+      <span class="ctag">🔒 FSSC 22000</span>
+      <span class="ctag">🌍 SDG-Aligned</span>
+    </div>
+  </div>
+  <div class="cvr">
+    <div class="cmeta">
+      <strong>Reporting Period</strong><br/><span id="meta-period">Q2 FY2025/26 (Oct–Dec 2025)</span><br/>
+      <strong style="margin-top:7px;display:block">Distribution</strong>Investment Partners · Board<br/>
+      <strong style="margin-top:7px;display:block">Classification</strong>Confidential · Not for redistribution
+    </div>
+    <div>
+      <div style="font-size:9.5px;color:var(--lt);margin-bottom:5px;letter-spacing:1px">SELECT QUARTER</div>
+      <div class="qsel">
+        <button class="qb" onclick="setQuarter('Q1',this)">Q1</button>
+        <button class="qb act" onclick="setQuarter('Q2',this)">Q2</button>
+        <button class="qb" onclick="setQuarter('Q3',this)">Q3</button>
+        <button class="qb" onclick="setQuarter('Q4F',this)">Q4 F</button>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="strip"></div>
+
+<nav class="tabs">
+  <div class="tab act" onclick="showTab('exec',this)">📋 Executive Summary</div>
+  <div class="tab" onclick="showTab('financial',this)">💰 Financials</div>
+  <div class="tab" onclick="showTab('impact',this)">🌍 Impact</div>
+  <div class="tab" onclick="showTab('funds',this)">📊 Use of Funds</div>
+  <div class="tab" onclick="showTab('risk',this)">⚠️ Risk Register</div>
+</nav>
+
+<div class="abar">
+  <span class="abar-l">Report Actions:</span>
+  <button class="abtn primary" onclick="window.print()">🖨 Print / Export PDF</button>
+  <button class="abtn" onclick="toggleHighlights()">🎯 Highlight Variances</button>
+  <button class="abtn" onclick="toggleCompact()">↕ Compact View</button>
+  <div class="spacer"></div>
+  <span class="period-badge" id="period-badge">Q2 FY2025/26 · As at Dec 2025</span>
+</div>
+
+<main class="main" id="main-content">
+
+<!-- ──────── EXEC SUMMARY ──────── -->
+<div id="tab-exec" class="tc act">
+  <div class="kb">
+    <div class="kc"><div class="kl">Revenue Q2</div><div class="kv" id="k-rev">$820K</div><div class="kchg p" id="k-rev-d">▲ 14.2% YoY</div><div class="knote" id="k-rev-n">Budget: $780K (+5.1%)</div></div>
+    <div class="kc o"><div class="kl">Gross Margin</div><div class="kv" id="k-gm">40.1%</div><div class="kchg p" id="k-gm-d">▲ 1.8pp vs Q1</div><div class="knote" id="k-gm-n">Vanilla premium</div></div>
+    <div class="kc e"><div class="kl">EBITDA</div><div class="kv" id="k-eb">$91K</div><div class="kchg p" id="k-eb-d">▲ 22.0% vs Q2 PY</div><div class="knote" id="k-eb-n">Margin: 11.1%</div></div>
+    <div class="kc s"><div class="kl">Cash Position</div><div class="kv" id="k-ca">$214K</div><div class="kchg p" id="k-ca-d">▲ +$48K vs Sep</div><div class="knote" id="k-ca-n">4.2 months runway</div></div>
+    <div class="kc m"><div class="kl">Active Farmers</div><div class="kv" id="k-fa">4,618</div><div class="kchg p" id="k-fa-d">▲ +218 this qtr</div><div class="knote" id="k-fa-n">5 regions</div></div>
+    <div class="kc i"><div class="kl">Income Uplift</div><div class="kv" id="k-iu">+31%</div><div class="kchg p">vs non-VOF farmers</div><div class="knote">Independent survey</div></div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Revenue vs Budget – 4 Quarter Rolling</div><div class="cs">Actual performance against quarterly targets</div></div><span class="badge bg" id="rev-badge">On Track</span></div>
+      <canvas id="qRevChart" height="210"></canvas>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Revenue Mix by Product</div><div class="cs">Q2 2025 contribution breakdown</div></div></div>
+      <canvas id="mixChart" height="210"></canvas>
+    </div>
+  </div>
+
+  <div class="g3">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Key Milestones – Quarter Progress</div><div class="cs">Click milestone to mark complete · vs investor-agreed targets</div></div><span class="badge bg" id="ms-badge">4/6 Complete</span></div>
+      <div class="ms-list" id="milestoneList"></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">CEO Commentary</div><div class="cs" id="ceo-period">Q2 FY2025/26</div></div></div>
+      <div class="quote" id="ceo-quote">"Q2 has been our strongest quarter to date. The coffee station expansion is already translating into higher volumes and better quality premiums. Vanilla pricing remains favourable in the European market and we are well-positioned for the H2 harvest season."</div>
+      <div style="font-size:11px;font-weight:600;color:var(--g1)">David M., CEO – Verdana Organics</div>
+      <div style="margin-top:14px"><div style="font-size:11px;font-weight:700;color:var(--g1);margin-bottom:7px">SDG Alignment</div>
+        <div class="sdg-row">
+          <span class="sdg" style="background:#DFF0D8;color:var(--g2)">SDG 1 · No Poverty</span>
+          <span class="sdg" style="background:#FFF3CD;color:var(--e1)">SDG 2 · Zero Hunger</span>
+          <span class="sdg" style="background:#D4EDDA;color:#155724">SDG 8 · Decent Work</span>
+          <span class="sdg" style="background:#D1ECF1;color:#0C5460">SDG 12 · Responsible Consumption</span>
+          <span class="sdg" style="background:#E2EFDA;color:#1D5016">SDG 15 · Life on Land</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────── FINANCIALS ──────── -->
+<div id="tab-financial" class="tc">
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Income Statement – Q2 vs Q1 vs Budget</div><div class="cs">USD · Unaudited management accounts · IFRS aligned</div></div><span class="badge bg">IFRS Aligned</span></div>
+      <table class="pnl">
+        <thead><tr><th style="text-align:left;width:36%">Item</th><th>Q2 Act.</th><th>Q2 Bdg.</th><th>Var%</th><th>Q1 Act.</th><th>YTD</th></tr></thead>
+        <tbody>
+          <tr class="sec"><td colspan="6">Revenue</td></tr>
+          <tr><td class="pn">Vanilla exports</td><td>$440K</td><td>$420K</td><td class="pos">+4.8%</td><td>$398K</td><td>$838K</td></tr>
+          <tr><td class="ps">Arabica coffee</td><td>$248K</td><td>$230K</td><td class="pos">+7.8%</td><td>$218K</td><td>$466K</td></tr>
+          <tr><td class="ps">Dried pineapple</td><td>$88K</td><td>$98K</td><td class="neg">−10.2%</td><td>$92K</td><td>$180K</td></tr>
+          <tr><td class="ps">Jackfruit</td><td>$44K</td><td>$32K</td><td class="pos">+37.5%</td><td>$36K</td><td>$80K</td></tr>
+          <tr class="tot"><td><b>Total Revenue</b></td><td><b>$820K</b></td><td><b>$780K</b></td><td class="pos"><b>+5.1%</b></td><td>$744K</td><td><b>$1,564K</b></td></tr>
+          <tr class="sec"><td colspan="6">Cost of Goods Sold</td></tr>
+          <tr><td class="ps">Farmer payments</td><td>($278K)</td><td>($272K)</td><td class="neg">−2.2%</td><td>($252K)</td><td>($530K)</td></tr>
+          <tr><td class="ps">Processing &amp; post-harvest</td><td>($152K)</td><td>($145K)</td><td class="neg">−4.8%</td><td>($138K)</td><td>($290K)</td></tr>
+          <tr><td class="ps">Certification</td><td>($18K)</td><td>($18K)</td><td>0%</td><td>($18K)</td><td>($36K)</td></tr>
+          <tr class="tot"><td><b>Gross Profit</b></td><td><b>$372K</b></td><td><b>$345K</b></td><td class="pos"><b>+7.8%</b></td><td>$336K</td><td><b>$708K</b></td></tr>
+          <tr><td class="ps" style="padding-left:16px;color:var(--lt)">GP Margin</td><td class="pos">40.1%</td><td>44.2%</td><td>−4.1pp</td><td>45.2%</td><td>45.3%</td></tr>
+          <tr class="sec"><td colspan="6">Operating Expenses</td></tr>
+          <tr><td class="ps">Staff &amp; payroll</td><td>($72K)</td><td>($65K)</td><td class="neg">−10.8%</td><td>($66K)</td><td>($138K)</td></tr>
+          <tr><td class="ps">Admin &amp; overheads</td><td>($28K)</td><td>($30K)</td><td class="pos">+6.7%</td><td>($28K)</td><td>($56K)</td></tr>
+          <tr><td class="ps">Marketing &amp; BD</td><td>($20K)</td><td>($16K)</td><td class="neg">−25.0%</td><td>($16K)</td><td>($36K)</td></tr>
+          <tr><td class="ps">Logistics</td><td>($38K)</td><td>($40K)</td><td class="pos">+5.0%</td><td>($36K)</td><td>($74K)</td></tr>
+          <tr><td class="ps">Depreciation</td><td>($22K)</td><td>($22K)</td><td>0%</td><td>($22K)</td><td>($44K)</td></tr>
+          <tr class="tot"><td><b>EBITDA</b></td><td><b>$91K</b></td><td><b>$71K</b></td><td class="pos"><b>+28.2%</b></td><td>$68K</td><td><b>$159K</b></td></tr>
+          <tr><td class="ps" style="padding-left:16px;color:var(--lt)">EBITDA Margin</td><td class="pos">11.1%</td><td>9.1%</td><td class="pos">+2.0pp</td><td>9.1%</td><td>10.2%</td></tr>
+          <tr><td class="ps">Interest expense</td><td>($18K)</td><td>($18K)</td><td>0%</td><td>($18K)</td><td>($36K)</td></tr>
+          <tr class="tot" style="background:var(--vn)"><td><b>Net Profit</b></td><td><b>$73K</b></td><td><b>$53K</b></td><td class="pos"><b>+37.7%</b></td><td>$50K</td><td><b>$123K</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">EBITDA Trend – 5 Quarters</div><div class="cs">Actual + margin line (%)</div></div></div>
+      <canvas id="ebitdaChart" height="185"></canvas>
+      <div style="margin-top:16px"><div class="ch" style="margin-bottom:8px"><div class="ct" style="font-size:12px">Key Ratios</div></div>
+        <table class="pnl">
+          <thead><tr><th style="text-align:left">Ratio</th><th>Q2</th><th>Q1</th><th>Target</th></tr></thead>
+          <tbody>
+            <tr><td class="pn">Current Ratio</td><td>1.84×</td><td>1.72×</td><td class="pos">≥1.5×</td></tr>
+            <tr><td class="pn">Quick Ratio</td><td>1.22×</td><td>1.18×</td><td class="pos">≥1.0×</td></tr>
+            <tr><td class="pn">Debt/Equity</td><td>0.68×</td><td>0.74×</td><td class="pos">≤0.8×</td></tr>
+            <tr><td class="pn">EBITDA Margin</td><td class="pos">11.1%</td><td>9.1%</td><td>≥10%</td></tr>
+            <tr><td class="pn">Rev per farmer</td><td class="pos">$178</td><td>$165</td><td>$170+</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────── IMPACT ──────── -->
+<div id="tab-impact" class="tc">
+  <div class="ig">
+    <div class="ic f" data-icon="🌿"><div class="il">Farmers Supported</div><div class="iv">4,618</div><div class="id">5 regions · 3 new districts Q2</div><div class="ip"><div class="ipf" style="width:77%"></div></div></div>
+    <div class="ic e" data-icon="💰"><div class="il">Avg Income Uplift</div><div class="iv">+31%</div><div class="id">vs non-VOF farmers · Survey Oct 2025</div><div class="ip"><div class="ipf" style="width:62%"></div></div></div>
+    <div class="ic d" data-icon="☕"><div class="il">Women Farmers</div><div class="iv">44%</div><div class="id">1,032 women registered · +6% YoY</div><div class="ip"><div class="ipf" style="width:44%"></div></div></div>
+    <div class="ic f" data-icon="🌾"><div class="il">MT Vanilla Processed</div><div class="iv">14.8t</div><div class="id">EU organic certified · peak quality</div><div class="ip"><div class="ipf" style="width:85%"></div></div></div>
+    <div class="ic e" data-icon="☕"><div class="il">MT Coffee Washed</div><div class="iv">48.2t</div><div class="id">Sipi station · +40% capacity</div><div class="ip"><div class="ipf" style="width:70%"></div></div></div>
+    <div class="ic d" data-icon="🌍"><div class="il">Export Destinations</div><div class="iv">12</div><div class="id">EU · USA · Australia · Asia-Pac</div><div class="ip"><div class="ipf" style="width:55%"></div></div></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Farmer Network Growth</div><div class="cs">Active registered farmers by quarter</div></div></div>
+      <canvas id="farmersChart" height="210"></canvas>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Income: VOF vs Non-VOF Farmers</div><div class="cs">Avg annual income by product (UGX M)</div></div></div>
+      <canvas id="incomeChart" height="210"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ──────── USE OF FUNDS ──────── -->
+<div id="tab-funds" class="tc">
+  <div class="card" style="margin-bottom:16px">
+    <div class="ch"><div><div class="ct">Use of Investment Funds – $515K Total Raised</div><div class="cs">Cumulative deployment vs funding mandate · hover bars for details</div></div><span class="badge bb">Updated Dec 2025</span></div>
+    <div style="padding-top:4px" id="uofList"></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Investment Deployment – Cumulative</div><div class="cs">Monthly drawdown vs target schedule</div></div></div>
+      <canvas id="fundsChart" height="220"></canvas>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Capital Structure – All Instruments</div><div class="cs">Total funding mix by source</div></div></div>
+      <canvas id="fundsMixChart" height="220"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ──────── RISK ──────── -->
+<div id="tab-risk" class="tc">
+  <div class="card">
+    <div class="ch"><div><div class="ct">Risk Register – Q2 FY2025/26</div><div class="cs">Board-level assessment · Click row to expand · Updated Dec 2025</div></div><span class="badge ba">2 High · 4 Med · 5 Low</span></div>
+    <table class="rtbl" id="riskTable">
+      <thead><tr><th style="width:22%">Risk</th><th>Category</th><th>Likelihood</th><th>Impact</th><th>Net Risk</th><th>Mitigation</th><th>Owner</th></tr></thead>
+      <tbody id="riskBody"></tbody>
+    </table>
+  </div>
+</div>
+
+</main>
+
+<footer class="ftr">
+  <div>Phase 3 · Investor &amp; Management Reporting · <span>Verdana Organics Uganda Ltd</span> · <span>⚡ Power BI Portfolio Showcase</span></div>
+  <div><span id="ftr-period">Q2 FY2025/26</span> · <span>Confidential – Board &amp; Investor Distribution Only</span> · Advisor: <span>Ronald K. · Finance &amp; Analytics</span></div>
+</footer>
+
+<script>
+const C={g1:'#1C3A1E',g2:'#2C5F2D',g3:'#3D7A40',g4:'#5C8C3A',g5:'#7EAB52',e1:'#8B5E3C',e2:'#C4956A',sn:'#D4A96A',vn:'#F5E6C8',rd:'#C0392B',am:'#E67E22',lt:'#7A8C7A',cm:'#E5DDD3'};
+const bf={family:'DM Sans',size:10};const gc='#E5DDD3';
+
+// QUARTER DATA
+const QD={
+  Q1:{period:'Q1 FY2025/26 (Apr–Jun 2025)',rev:'$744K',gm:'45.2%',eb:'$68K',ca:'$166K',fa:'4,400',iu:'+28%',revD:'▲ 12.0% YoY',gmD:'▲ 1.2pp vs Budget',ebD:'EBITDA margin 9.1%',caD:'Start of FY',faD:'▲ +180 this qtr',
+    revBadge:'On Track',revBadgeClass:'bg',
+    qRevActual:[598,642,744,null],ceoQ:'Q1 FY2025/26',
+    ceoText:'"Q1 saw strong vanilla performance driven by favourable European pricing. Our new drying equipment at Kayunga came online in May, immediately improving throughput. Coffee export volumes tracking ahead of plan."'},
+  Q2:{period:'Q2 FY2025/26 (Oct–Dec 2025)',rev:'$820K',gm:'40.1%',eb:'$91K',ca:'$214K',fa:'4,618',iu:'+31%',revD:'▲ 14.2% YoY',gmD:'▲ 1.8pp vs Q1',ebD:'Margin: 11.1%',caD:'4.2 months runway',faD:'▲ +218 this qtr',
+    revBadge:'On Track',revBadgeClass:'bg',
+    qRevActual:[598,642,744,820],ceoQ:'Q2 FY2025/26',
+    ceoText:'"Q2 has been our strongest quarter to date. The coffee station expansion is already translating into higher volumes and better quality premiums. Vanilla pricing remains favourable in the European market and we are well-positioned for the H2 harvest season."'},
+  Q3:{period:'Q3 FY2025/26 (Jan–Mar 2026) – Forecast',rev:'$847K*',gm:'39.5%*',eb:'$97K*',ca:'$260K*',fa:'4,820*',iu:'+33%*',revD:'* Forecast only',gmD:'* Projected',ebD:'Forecast margin: 11.5%',caD:'Projected end Q3',faD:'Target: 200 new',
+    revBadge:'Forecast',revBadgeClass:'ba',
+    qRevActual:[598,642,744,820],ceoQ:'Q3 FY2025/26 – Outlook',
+    ceoText:'"As we enter Q3, the pipeline for vanilla export contracts remains strong. Jackfruit commercial negotiations with EU buyers are progressing well. We anticipate continued margin improvement as processing efficiencies from the Kayunga upgrade flow through."'},
+  Q4F:{period:'Q4 FY2025/26 (Apr–Jun 2026) – Forecast',rev:'$910K*',gm:'40.0%*',eb:'$106K*',ca:'$310K*',fa:'5,100*',iu:'+35%*',revD:'* Full year forecast',gmD:'* Projected target',ebD:'Target margin: 11.7%',caD:'Projected year-end',faD:'Full year target',
+    revBadge:'Target',revBadgeClass:'ba',
+    qRevActual:[598,642,744,820],ceoQ:'Q4 Outlook FY2025/26',
+    ceoText:'"Full year guidance maintained. We expect to reach 5,100 active farmers by year-end, delivering revenue ahead of our $3.2M annual target. Jackfruit is emerging as a meaningful fourth revenue stream. We remain fully committed to our investor reporting obligations."'}
+};
+
+let currentQ='Q2';
+let highlightOn=false;let compactOn=false;
+
+// ──── CHARTS ────
+const qRevChart=new Chart(document.getElementById('qRevChart').getContext('2d'),{
+  type:'bar',
+  data:{labels:['Q3 FY24','Q4 FY24','Q1 FY25','Q2 FY25'],
+    datasets:[
+      {label:'Actual',data:[598,642,744,820],backgroundColor:[C.g3,C.g3,C.g2,C.g2],borderRadius:4},
+      {label:'Budget',data:[580,620,720,780],type:'line',borderColor:C.sn,borderWidth:2,tension:.3,pointBackgroundColor:C.sn,pointRadius:5,fill:false}
+    ]},
+  options:{responsive:true,maintainAspectRatio:true,animation:{duration:600},
+    plugins:{legend:{labels:{font:bf,color:C.lt}},tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.raw+'K'}}},
+    scales:{x:{grid:{display:false},ticks:{font:bf,color:C.lt}},y:{grid:{color:gc},ticks:{font:bf,color:C.lt,callback:v=>'$'+v+'K'}}}}
+});
+
+const mixChart=new Chart(document.getElementById('mixChart').getContext('2d'),{
+  type:'doughnut',
+  data:{labels:['Vanilla 53.7%','Coffee 30.2%','Pineapple 10.7%','Jackfruit 5.4%'],
+    datasets:[{data:[53.7,30.2,10.7,5.4],backgroundColor:[C.g2,C.g3,C.e1,C.sn],borderWidth:2,borderColor:'#FAF7F2'}]},
+  options:{responsive:true,maintainAspectRatio:true,cutout:'65%',animation:{animateRotate:true,duration:600},
+    plugins:{legend:{position:'right',labels:{font:bf,color:C.lt,padding:14,boxWidth:10}}}}
+});
+
+const ebitdaChart=new Chart(document.getElementById('ebitdaChart').getContext('2d'),{
+  type:'bar',
+  data:{labels:['Q2 FY24','Q3 FY24','Q4 FY24','Q1 FY25','Q2 FY25'],
+    datasets:[
+      {label:'EBITDA ($K)',data:[52,65,74,68,91],backgroundColor:[C.g4,C.g4,C.g4,C.g3,C.g2],borderRadius:5},
+      {label:'EBITDA %',data:[8.2,9.8,10.8,9.1,11.1],type:'line',yAxisID:'y2',borderColor:C.sn,borderWidth:2,tension:.4,pointBackgroundColor:C.sn,pointRadius:4,fill:false}
+    ]},
+  options:{responsive:true,maintainAspectRatio:true,
+    plugins:{legend:{labels:{font:bf,color:C.lt}}},
+    scales:{x:{grid:{display:false},ticks:{font:bf,color:C.lt}},
+      y:{grid:{color:gc},ticks:{font:bf,color:C.lt,callback:v=>'$'+v+'K'}},
+      y2:{position:'right',grid:{display:false},ticks:{font:bf,color:C.lt,callback:v=>v+'%'}}}}
+});
+
+const farmersChart=new Chart(document.getElementById('farmersChart').getContext('2d'),{
+  type:'bar',
+  data:{labels:['Q1 FY24','Q2 FY24','Q3 FY24','Q4 FY24','Q1 FY25','Q2 FY25'],
+    datasets:[
+      {label:'Women',data:[820,940,1010,1080,1060,1032],backgroundColor:C.sn,borderRadius:3},
+      {label:'Men',data:[2280,2560,2890,3120,3340,3586],backgroundColor:C.g2,borderRadius:3}
+    ]},
+  options:{responsive:true,maintainAspectRatio:true,
+    plugins:{legend:{labels:{font:bf,color:C.lt}}},
+    scales:{x:{stacked:true,grid:{display:false},ticks:{font:bf,color:C.lt}},y:{stacked:true,grid:{color:gc},ticks:{font:bf,color:C.lt}}}}
+});
+
+const incomeChart=new Chart(document.getElementById('incomeChart').getContext('2d'),{
+  type:'bar',
+  data:{labels:['Vanilla','Coffee','Pineapple','Jackfruit'],
+    datasets:[
+      {label:'VOF Farmers',data:[3.8,2.9,1.6,0.9],backgroundColor:C.g2,borderRadius:4},
+      {label:'Non-VOF',data:[2.6,2.2,1.3,0.7],backgroundColor:C.cm,borderRadius:4}
+    ]},
+  options:{responsive:true,maintainAspectRatio:true,
+    plugins:{legend:{labels:{font:bf,color:C.lt}},tooltip:{callbacks:{label:c=>c.dataset.label+': UGX '+c.raw+'M'}}},
+    scales:{x:{grid:{display:false},ticks:{font:bf,color:C.lt}},y:{grid:{color:gc},ticks:{font:bf,color:C.lt,callback:v=>'UGX '+v+'M'}}}}
+});
+
+const fundsChart=new Chart(document.getElementById('fundsChart').getContext('2d'),{
+  type:'line',
+  data:{labels:['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    datasets:[
+      {label:'Deployed ($K)',data:[28,62,118,185,268,342,408,452,487],borderColor:C.g2,backgroundColor:C.g2+'22',fill:true,tension:.35,borderWidth:2.5,pointBackgroundColor:C.g2,pointRadius:4},
+      {label:'Target ($K)',data:[40,85,140,200,280,350,415,460,515],borderColor:C.sn,borderDash:[5,4],borderWidth:1.5,fill:false,pointRadius:0}
+    ]},
+  options:{responsive:true,maintainAspectRatio:true,
+    plugins:{legend:{labels:{font:bf,color:C.lt}}},
+    scales:{x:{grid:{display:false},ticks:{font:bf,color:C.lt}},y:{grid:{color:gc},ticks:{font:bf,color:C.lt,callback:v=>'$'+v+'K'}}}}
+});
+
+const fundsMixChart=new Chart(document.getElementById('fundsMixChart').getContext('2d'),{
+  type:'pie',
+  data:{labels:['Lead Investor (Equity)','Dev Finance Inst.','Impact Fund','Grant (CFC)','Philanthropy'],
+    datasets:[{data:[28,22,25,14,11],backgroundColor:[C.g2,C.g3,C.g4,C.e1,C.sn],borderWidth:2,borderColor:'#FAF7F2'}]},
+  options:{responsive:true,maintainAspectRatio:true,
+    plugins:{legend:{position:'right',labels:{font:bf,color:C.lt,padding:12,boxWidth:10}}}}
+});
+
+// ──── MILESTONES ────
+const milestones=[
+  {t:'Coffee washing station expansion complete',s:'Sipi facility · Oct 2025 · On time, on budget',status:'done'},
+  {t:'Vanilla quick-curing equipment installed',s:'Kayunga · Capacity +40% · Nov 2025',status:'done'},
+  {t:'Fairtrade audit passed – certification pending',s:'Expected Q3 2026',status:'done'},
+  {t:'218 new farmers onboarded (target: 200)',s:'Q2 – exceeded target',status:'done'},
+  {t:'ERP system upgrade – 60% complete',s:'Dynamics 365 · Target: Mar 2026',status:'prog'},
+  {t:'Jackfruit commercial export contract',s:'EU buyer negotiations · Q3 target',status:'plan'},
+];
+function buildMilestones(){
+  const l=document.getElementById('milestoneList');
+  l.innerHTML='';
+  let done=milestones.filter(m=>m.status==='done').length;
+  document.getElementById('ms-badge').textContent=done+'/'+milestones.length+' Complete';
+  milestones.forEach((m,i)=>{
+    const d=document.createElement('div');d.className='ms-row';
+    d.innerHTML=`<div class="ms-dot ${m.status}" onclick="cycleMilestone(${i})">${m.status==='done'?'✓':m.status==='prog'?'~':'○'}</div>
+      <div><div class="ms-t">${m.t}</div><div class="ms-s">${m.s}</div></div>`;
+    l.appendChild(d);
+  });
+}
+function cycleMilestone(i){
+  const states=['plan','prog','done'];
+  const cur=states.indexOf(milestones[i].status);
+  milestones[i].status=states[(cur+1)%3];
+  buildMilestones();
+}
+buildMilestones();
+
+// ──── USE OF FUNDS ────
+const uofData=[
+  {l:'Coffee Processing Site',pct:100,amt:'$142K',note:'Complete ✓',c:C.g2},
+  {l:'Vanilla Processing Facility',pct:90,amt:'$115K',note:'On track Q3',c:C.g3},
+  {l:'Drying Equipment',pct:100,amt:'$88K',note:'Installed ✓',c:C.g4},
+  {l:'Warehouse Expansion',pct:65,amt:'$52K',note:'In progress',c:C.e1},
+  {l:'Quality Lab & Testing',pct:80,amt:'$40K',note:'Commissioning',c:C.sn},
+  {l:'Working Capital',pct:88,amt:'$78K',note:'Deployed',c:C.g5},
+];
+function buildUoF(){
+  const c=document.getElementById('uofList');
+  c.innerHTML='';
+  uofData.forEach(u=>{
+    c.innerHTML+=`<div class="uof-row">
+      <div class="uof-l">${u.l}</div>
+      <div class="uof-bw"><div class="uof-b" style="width:${u.pct}%;background:${u.c};color:${u.pct>50?'var(--wh)':'var(--g1)'}">${u.pct}% · ${u.amt}</div></div>
+      <div class="uof-m">${u.note}</div>
+    </div>`;
+  });
+}
+buildUoF();
+
+// ──── RISK REGISTER ────
+const risks=[
+  {n:'Vanilla price volatility',s:'Global price swings ±40%',cat:'Market',lik:'Medium',imp:'High',net:'h',mit:'Forward contracts with EU buyers; product diversification'},
+  {n:'Farmer attrition',s:'Competition from middlemen',cat:'Operational',lik:'Medium',imp:'High',net:'h',mit:'Loyalty bonuses; direct payment within 48hrs of delivery'},
+  {n:'Certification non-renewal',s:'EU Organic / Fairtrade lapse risk',cat:'Compliance',lik:'Low',imp:'High',net:'m',mit:'Annual audit calendar; FSSC compliance officer appointed'},
+  {n:'FX exposure',s:'USD/UGX fluctuation on farmer costs',cat:'Financial',lik:'Medium',imp:'Medium',net:'m',mit:'Revenue in USD; farmer costs in UGX – natural hedge'},
+  {n:'Climate & harvest yield',s:'El Niño impact on vanilla crop',cat:'Climate',lik:'Medium',imp:'Medium',net:'m',mit:'Crop insurance; climate-smart agriculture training'},
+  {n:'Key person dependency',s:'CEO concentration risk',cat:'Governance',lik:'Low',imp:'Medium',net:'m',mit:'Management strengthening; Board succession plan'},
+  {n:'Working capital strain',s:'Seasonal harvest cash timing',cat:'Financial',lik:'Low',imp:'Medium',net:'l',mit:'Revolving credit facility; 4-month cash runway maintained'},
+  {n:'ERP system transition',s:'D365 migration disruption',cat:'Technology',lik:'Low',imp:'Low',net:'l',mit:'Phased rollout; parallel run until Q1 2026'},
+];
+function buildRisk(){
+  const b=document.getElementById('riskBody');
+  b.innerHTML='';
+  risks.forEach(r=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><span class="rnm">${r.n}</span><span class="rsb">${r.s}</span></td>
+      <td>${r.cat}</td><td>${r.lik}</td><td>${r.imp}</td>
+      <td><span class="rp ${r.net==='h'?'r-h':r.net==='m'?'r-m':'r-l'}">${r.net==='h'?'HIGH':r.net==='m'?'MEDIUM':'LOW'}</span></td>
+      <td style="font-size:10.5px">${r.mit}</td><td style="font-size:10.5px">${r.cat==='Financial'?'CFO':r.cat==='Governance'?'Board':r.cat==='Operational'?'Ops':'Management'}</td>`;
+    b.appendChild(tr);
+  });
+}
+buildRisk();
+
+// ──── QUARTER SWITCH ────
+function setQuarter(q,btn){
+  currentQ=q;
+  document.querySelectorAll('.qb').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  const d=QD[q];
+  document.getElementById('cover-sub').textContent=d.period+' · Board & Investor Distribution';
+  document.getElementById('meta-period').textContent=d.period;
+  document.getElementById('ftr-period').textContent=q+' FY2025/26';
+  document.getElementById('period-badge').textContent=q+' FY2025/26 · '+d.period.split('·')[1]?.trim().split('·')[0]?.trim();
+  const dmap={'k-rev':d.rev,'k-gm':d.gm,'k-eb':d.eb,'k-ca':d.ca,'k-fa':d.fa,'k-iu':d.iu};
+  const ddmap={'k-rev-d':d.revD,'k-gm-d':d.gmD,'k-eb-d':d.ebD,'k-ca-d':d.caD,'k-fa-d':d.faD};
+  Object.entries(dmap).forEach(([id,v])=>{ const el=document.getElementById(id); if(el){el.textContent=v;el.style.transform='scale(1.05)';setTimeout(()=>el.style.transform='',300); }});
+  Object.entries(ddmap).forEach(([id,v])=>{ const el=document.getElementById(id); if(el)el.textContent=v; });
+  document.getElementById('ceo-period').textContent=d.ceoQ;
+  document.getElementById('ceo-quote').textContent=d.ceoText;
+  const rb=document.getElementById('rev-badge');
+  rb.textContent=d.revBadge;rb.className='badge '+d.revBadgeClass;
+  if(d.qRevActual){
+    qRevChart.data.datasets[0].data=d.qRevActual;
+    qRevChart.update('active');
+  }
+}
+
+// ──── ACTIONS ────
+function toggleHighlights(){
+  highlightOn=!highlightOn;
+  document.querySelectorAll('.neg').forEach(el=>{
+    el.style.backgroundColor=highlightOn?'#FFEBEE':'';
+    el.style.padding=highlightOn?'2px 4px':'';
+    el.style.borderRadius=highlightOn?'3px':'';
+  });
+}
+function toggleCompact(){
+  compactOn=!compactOn;
+  document.querySelectorAll('.card').forEach(c=>{c.style.padding=compactOn?'12px':'18px'});
+  document.querySelectorAll('.kb .kc').forEach(c=>{c.style.padding=compactOn?'9px 12px':'13px 15px'});
+}
+
+// ──── TABS ────
+function showTab(id,el){
+  document.querySelectorAll('.tc').forEach(t=>t.classList.remove('act'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('act'));
+  document.getElementById('tab-'+id).classList.add('act');
+  el.classList.add('act');
+}
+</script>
+</body>
+</html>
