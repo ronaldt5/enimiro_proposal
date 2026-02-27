@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Verdana Organics – 5-Year Financial Model</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --g1:#1C3A1E;--g2:#2C5F2D;--g3:#3D7A40;--g4:#5C8C3A;--g5:#7EAB52;
+  --cr:#F2EDE4;--cl:#FAF7F2;--cm:#E5DDD3;
+  --e1:#8B5E3C;--e2:#C4956A;--sn:#D4A96A;--vn:#F5E6C8;
+  --dt:#1C2B1E;--mt:#4A5C4A;--lt:#7A8C7A;--wh:#FFFFFF;
+  --rd:#C0392B;--am:#E67E22;--bl:#1565C0;
+  --mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cl);color:var(--dt);min-height:100vh}
+
+/* HEADER */
+.hdr{background:var(--g1);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:60px;border-bottom:3px solid var(--sn)}
+.hl{display:flex;align-items:center;gap:12px}
+.lm{width:34px;height:34px;background:var(--g2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.hco{font-size:9.5px;letter-spacing:3px;text-transform:uppercase;color:var(--sn);font-weight:600}
+.hrp{font-size:15px;font-weight:700;color:var(--vn);margin-top:1px}
+.hr{display:flex;align-items:center;gap:12px}
+.hbadge{background:var(--g2);color:var(--vn);font-size:10px;font-weight:600;padding:4px 12px;border-radius:20px;letter-spacing:.5px}
+.hbadge.live{background:var(--e1);color:var(--wh)}
+.strip{height:4px;background:linear-gradient(90deg,var(--g2) 0%,var(--g4) 50%,var(--sn) 100%)}
+
+/* SCENARIO BAR */
+.scenebar{display:flex;align-items:center;gap:14px;padding:12px 24px;background:var(--g1);border-bottom:2px solid var(--sn)}
+.sb-label{font-size:10px;font-weight:700;color:var(--lt);letter-spacing:1px;text-transform:uppercase}
+.scen-btns{display:flex;gap:4px}
+.sb{padding:6px 16px;border-radius:6px;border:none;font-family:'DM Sans';font-size:11.5px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.3px}
+.sb.bear{background:#2D1B1B;color:#E87070;border:1.5px solid #E87070}
+.sb.base{background:#1B2B1E;color:var(--g5);border:1.5px solid var(--g4)}
+.sb.bull{background:#1B251E;color:var(--sn);border:1.5px solid var(--sn)}
+.sb.act{filter:brightness(1.3);transform:scale(1.03);box-shadow:0 0 12px rgba(255,255,255,.1)}
+.sep{width:1px;height:28px;background:#2C5F2D}
+.sb-info{color:var(--lt);font-size:11px}
+.sb-info strong{color:var(--sn)}
+.recalc-btn{margin-left:auto;background:var(--g2);color:var(--wh);border:none;font-family:'DM Sans';font-size:11px;font-weight:700;padding:7px 18px;border-radius:6px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.recalc-btn:hover{background:var(--g3)}
+
+/* DRIVER PANEL */
+.driver-panel{background:var(--g1);border-bottom:1px solid #2C5F2D;padding:0 24px 16px}
+.dp-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;padding-top:14px}
+.dp-group{background:#0D2010;border-radius:8px;padding:12px;border:1px solid #2C5F2D}
+.dp-title{font-size:9px;font-weight:700;color:var(--lt);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;border-bottom:1px solid #2C5F2D;padding-bottom:6px}
+.dp-field{margin-bottom:8px}
+.dp-field label{font-size:9.5px;color:var(--lt);display:block;margin-bottom:3px}
+.dp-field input[type=range]{width:100%;accent-color:var(--g5);height:4px;cursor:pointer}
+.dp-field .val{font-family:var(--mono);font-size:11px;color:var(--sn);font-weight:600;float:right;margin-top:-16px}
+
+/* TABS */
+.tabs{display:flex;background:var(--cm);border-bottom:1px solid #D4CBBC;padding:0 24px}
+.tab{padding:10px 16px;font-size:12px;font-weight:600;cursor:pointer;color:var(--mt);border-bottom:3px solid transparent;transition:all .18s;white-space:nowrap}
+.tab.act{color:var(--g2);border-color:var(--g2);background:var(--cl)}
+
+/* MAIN */
+.main{padding:18px 24px}
+
+/* KPI STRIP */
+.ks{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;margin-bottom:18px}
+.kc{background:var(--wh);border-radius:9px;padding:13px 15px;border:1px solid var(--cm);box-shadow:0 1px 6px rgba(44,95,45,.05);border-top:3px solid var(--g2);transition:all .18s;position:relative;overflow:hidden}
+.kc::after{content:attr(data-trend);position:absolute;right:10px;bottom:8px;font-size:18px;opacity:.12}
+.kc.e{border-top-color:var(--e1)} .kc.s{border-top-color:var(--sn)} .kc.o{border-top-color:var(--g4)} .kc.m{border-top-color:var(--g5)} .kc.b{border-top-color:var(--bl)}
+.kl{font-size:9px;font-weight:700;color:var(--lt);letter-spacing:.5px;text-transform:uppercase}
+.kv{font-size:22px;font-weight:700;color:var(--g1);margin:4px 0 2px;font-family:var(--mono);transition:all .35s;display:block}
+.kchg{font-size:10px;font-weight:600} .kchg.p{color:var(--g2)} .kchg.n{color:var(--rd)}
+.knote{font-size:9px;color:var(--lt);margin-top:1px}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-bottom:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+
+/* CARD */
+.card{background:var(--wh);border-radius:10px;padding:18px;border:1px solid var(--cm);box-shadow:0 2px 8px rgba(44,95,45,.05)}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.ct{font-size:12.5px;font-weight:700;color:var(--g1)} .cs{font-size:10px;color:var(--lt);margin-top:2px}
+.badge{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:12px;white-space:nowrap}
+.bg{background:#E8F5E9;color:var(--g2)} .ba{background:#FFF8E1;color:var(--e1)} .br{background:#FFEBEE;color:var(--rd)} .bb{background:#E3F2FD;color:var(--bl)}
+
+/* MODEL TABLE */
+.mt{width:100%;border-collapse:collapse;font-size:11.5px}
+.mt th{font-size:9px;font-weight:700;color:var(--lt);letter-spacing:.5px;text-transform:uppercase;padding:6px 10px 8px;text-align:right;border-bottom:2px solid var(--cm);position:sticky;top:0;background:var(--wh);z-index:1}
+.mt th:first-child,.mt th:nth-child(2){text-align:left}
+.mt td{padding:7px 10px;border-bottom:1px solid var(--cl);text-align:right;font-variant-numeric:tabular-nums;transition:background .15s}
+.mt td:first-child{text-align:left;font-weight:600;color:var(--g1)}
+.mt td:nth-child(2){text-align:left;font-size:9.5px;color:var(--lt);font-weight:400;font-family:var(--mono)}
+.mt tr:hover td{background:var(--cl)}
+.mt .sec td{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--lt);background:#F5F0E8;padding:5px 10px}
+.mt .tot td{font-weight:700;background:var(--vn);font-family:var(--mono)}
+.mt .subtot td{font-weight:600;background:var(--cl)}
+.mt .mono td:not(:first-child):not(:nth-child(2)){font-family:var(--mono)}
+.pos{color:var(--g2)} .neg{color:var(--rd)} .neu{color:var(--mt)}
+
+/* SENSITIVITY TABLE */
+.sens-wrap{overflow-x:auto}
+.stbl{border-collapse:collapse;font-size:11px;font-family:var(--mono)}
+.stbl th{padding:6px 12px;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--lt);text-align:center;border:1px solid var(--cm)}
+.stbl th:first-child{text-align:left}
+.stbl td{padding:7px 12px;border:1px solid var(--cm);text-align:center;cursor:pointer;transition:all .15s;font-weight:600}
+.stbl td:first-child{text-align:left;font-weight:700;color:var(--g1);font-family:'DM Sans';font-size:10.5px;font-variant-numeric:tabular-nums}
+.stbl td:hover{transform:scale(1.05);z-index:2;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.cell-vhigh{background:#1C3A1E;color:#7EAB52}
+.cell-high{background:#2C5F2D;color:#F5E6C8}
+.cell-med{background:#5C8C3A;color:var(--wh)}
+.cell-low{background:#F5E6C8;color:#3D7A40}
+.cell-neg{background:#FFEBEE;color:var(--rd)}
+.cell-vneg{background:#C0392B;color:var(--wh)}
+
+/* UNIT ECONOMICS */
+.ue-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.ue-card{background:var(--cl);border-radius:8px;padding:14px;border:1px solid var(--cm)}
+.ue-title{font-size:11px;font-weight:700;color:var(--g1);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.ue-rows{}
+.ue-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--cm)}
+.ue-row:last-child{border-bottom:none;padding-top:8px;margin-top:4px}
+.ue-lbl{font-size:10.5px;color:var(--mt)}
+.ue-val{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--g1)}
+.ue-row.total .ue-lbl{font-weight:700;color:var(--g1)}
+.ue-row.total .ue-val{color:var(--g2);font-size:13px}
+
+/* WATERFALL */
+.wf-chart{position:relative}
+
+/* FOOTER */
+.ftr{background:var(--g1);color:var(--lt);font-size:9.5px;padding:9px 24px;display:flex;justify-content:space-between;margin-top:8px}
+.ftr span{color:var(--sn);font-weight:600}
+
+/* TAB CONTENT */
+.tc{display:none}.tc.act{display:block}
+
+/* Assumption tooltip */
+.asm{display:inline-block;width:13px;height:13px;background:var(--cm);border-radius:50%;font-size:8px;font-weight:700;color:var(--lt);text-align:center;line-height:13px;cursor:help;margin-left:4px;vertical-align:middle}
+
+/* Animated number */
+@keyframes flash{0%{color:var(--sn)}100%{color:inherit}}
+.updated{animation:flash .5s ease}
+
+.scenario-label{font-size:11px;font-weight:700;padding:4px 12px;border-radius:12px}
+.label-bear{background:#2D1B1B;color:#E87070}
+.label-base{background:#E8F5E9;color:var(--g2)}
+.label-bull{background:var(--vn);color:var(--e1)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hl">
+    <div class="lm">🌿</div>
+    <div>
+      <div class="hco">Verdana Organics Uganda Ltd</div>
+      <div class="hrp">5-Year Financial Model &amp; Scenario Analysis</div>
+    </div>
+  </div>
+  <div class="hr">
+    <span class="hbadge">FY2025 – FY2030</span>
+    <span class="hbadge live">⚡ Interactive</span>
+    <span class="hbadge" id="scen-badge" style="background:var(--g2)">Base Case</span>
+  </div>
+</header>
+<div class="strip"></div>
+
+<!-- SCENARIO + DRIVER BAR -->
+<div class="scenebar">
+  <span class="sb-label">Scenario</span>
+  <div class="scen-btns">
+    <button class="sb bear" id="btn-bear" onclick="setScenario('bear',this)">🐻 Bear</button>
+    <button class="sb base act" id="btn-base" onclick="setScenario('base',this)">✦ Base</button>
+    <button class="sb bull" id="btn-bull" onclick="setScenario('bull',this)">🐂 Bull</button>
+  </div>
+  <div class="sep"></div>
+  <span class="sb-info">Scenario: <strong id="scen-desc">Steady growth, stable commodity prices, moderate farmer expansion</strong></span>
+  <button class="recalc-btn" onclick="recalcAll()">↻ Recalculate Model</button>
+</div>
+
+<!-- DRIVER PANEL -->
+<div class="driver-panel">
+  <div class="dp-grid">
+    <div class="dp-group">
+      <div class="dp-title">Revenue Drivers</div>
+      <div class="dp-field">
+        <label>Vanilla price $/kg <span class="val" id="v-vanilla-price">42</span></label>
+        <input type="range" id="r-vanilla-price" min="25" max="80" value="42" oninput="updateDriver('vanilla-price',this.value);recalcAll()">
+      </div>
+      <div class="dp-field">
+        <label>Coffee price $/kg <span class="val" id="v-coffee-price">3.80</span></label>
+        <input type="range" id="r-coffee-price" min="2" max="7" step=".1" value="3.80" oninput="updateDriver('coffee-price',this.value);recalcAll()">
+      </div>
+      <div class="dp-field">
+        <label>Volume growth %/yr <span class="val" id="v-vol-growth">18%</span></label>
+        <input type="range" id="r-vol-growth" min="5" max="40" value="18" oninput="updateDriver('vol-growth',this.value);recalcAll()">
+      </div>
+    </div>
+    <div class="dp-group">
+      <div class="dp-title">Cost Drivers</div>
+      <div class="dp-field">
+        <label>Farmer pmt % of rev <span class="val" id="v-farmer-pct">34%</span></label>
+        <input type="range" id="r-farmer-pct" min="25" max="50" value="34" oninput="updateDriver('farmer-pct',this.value);recalcAll()">
+      </div>
+      <div class="dp-field">
+        <label>Processing cost $/kg <span class="val" id="v-proc-cost">2.10</span></label>
+        <input type="range" id="r-proc-cost" min="1" max="5" step=".1" value="2.10" oninput="updateDriver('proc-cost',this.value);recalcAll()">
+      </div>
+      <div class="dp-field">
+        <label>OPEX growth %/yr <span class="val" id="v-opex-growth">8%</span></label>
+        <input type="range" id="r-opex-growth" min="3" max="20" value="8" oninput="updateDriver('opex-growth',this.value);recalcAll()">
+      </div>
+    </div>
+    <div class="dp-group">
+      <div class="dp-title">Farmer Network</div>
+      <div class="dp-field">
+        <label>Farmers FY25 base <span class="val" id="v-farmers-base">4618</span></label>
+        <input type="range" id="r-farmers-base" min="3000" max="6000" value="4618" oninput="updateDriver('farmers-base',this.value);recalcAll()">
+      </div>
+      <div class="dp-field">
+        <label>Annual farmer adds <span class="val" id="v-farmer-add">800</span></label>
+        <input type="range" id="r-farmer-add" min="200" max="2000" value="800" oninput="updateDriver('farmer-add',this.value);recalcAll()">
+      </div>
+      <div class="dp-field">
+        <label>Rev / farmer $/yr <span class="val" id="v-rev-farmer">720</span></label>
+        <input type="range" id="r-rev-farmer" min="400" max="1500" value="720" oninput="updateDriver('rev-farmer',this.value);recalcAll()">
+      </div>
+    </div>
+    <div class="dp-group">
+      <div class="dp-title">Margins &amp; Returns</div>
+      <div class="dp-field">
+        <label>Target GP margin <span class="val" id="v-gp-target">42%</span></label>
+        <input type="range" id="r-gp-target" min="25" max="60" value="42" oninput="updateDriver('gp-target',this.value);recalcAll()">
+      </div>
+      <div class="dp-field">
+        <label>EBITDA margin target <span class="val" id="v-ebitda-target">15%</span></label>
+        <input type="range" id="r-ebitda-target" min="5" max="30" value="15" oninput="updateDriver('ebitda-target',this.value);recalcAll()">
+      </div>
+      <div class="dp-field">
+        <label>Discount rate (WACC) <span class="val" id="v-wacc">12%</span></label>
+        <input type="range" id="r-wacc" min="8" max="25" value="12" oninput="updateDriver('wacc',this.value);recalcAll()">
+      </div>
+    </div>
+    <div class="dp-group">
+      <div class="dp-title">Capital &amp; Funding</div>
+      <div class="dp-field">
+        <label>CapEx / year ($K) <span class="val" id="v-capex">180</span></label>
+        <input type="range" id="r-capex" min="50" max="500" value="180" oninput="updateDriver('capex',this.value);recalcAll()">
+      </div>
+      <div class="dp-field">
+        <label>Debt interest rate <span class="val" id="v-interest">9%</span></label>
+        <input type="range" id="r-interest" min="5" max="20" value="9" oninput="updateDriver('interest',this.value);recalcAll()">
+      </div>
+      <div class="dp-field">
+        <label>Loan balance ($K) <span class="val" id="v-loan">620</span></label>
+        <input type="range" id="r-loan" min="0" max="1500" value="620" oninput="updateDriver('loan',this.value);recalcAll()">
+      </div>
+    </div>
+    <div class="dp-group">
+      <div class="dp-title">Tax &amp; Working Cap</div>
+      <div class="dp-field">
+        <label>Corporate tax rate <span class="val" id="v-tax-rate">30%</span></label>
+        <input type="range" id="r-tax-rate" min="10" max="40" value="30" oninput="updateDriver('tax-rate',this.value);recalcAll()">
+      </div>
+      <div class="dp-field">
+        <label>Debtor days <span class="val" id="v-debtor-days">45</span></label>
+        <input type="range" id="r-debtor-days" min="15" max="90" value="45" oninput="updateDriver('debtor-days',this.value);recalcAll()">
+      </div>
+      <div class="dp-field">
+        <label>Creditor days <span class="val" id="v-creditor-days">30</span></label>
+        <input type="range" id="r-creditor-days" min="10" max="60" value="30" oninput="updateDriver('creditor-days',this.value);recalcAll()">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<nav class="tabs">
+  <div class="tab act" onclick="showTab('projections',this)">📊 5-Year Projections</div>
+  <div class="tab" onclick="showTab('pnl',this)">💰 P&amp;L Model</div>
+  <div class="tab" onclick="showTab('uniteconomics',this)">⚙️ Unit Economics</div>
+  <div class="tab" onclick="showTab('sensitivity',this)">🎯 Sensitivity Analysis</div>
+  <div class="tab" onclick="showTab('dcf',this)">🏦 DCF &amp; Valuation</div>
+</nav>
+
+<main class="main">
+
+<!-- ──────── PROJECTIONS ──────── -->
+<div id="tab-projections" class="tc act">
+  <div class="ks">
+    <div class="kc" data-trend="📈"><div class="kl">Revenue FY30</div><div class="kv" id="kv-rev30">$0M</div><div class="kchg p" id="kd-rev30">CAGR loading…</div><div class="knote">5-year projection</div></div>
+    <div class="kc o" data-trend="📊"><div class="kl">EBITDA FY30</div><div class="kv" id="kv-eb30">$0K</div><div class="kchg p" id="kd-eb30">Margin loading…</div><div class="knote">Operating profit</div></div>
+    <div class="kc e" data-trend="🌿"><div class="kl">Net Profit FY30</div><div class="kv" id="kv-np30">$0K</div><div class="kchg p" id="kd-np30">Net margin…</div><div class="knote">After tax &amp; interest</div></div>
+    <div class="kc s" data-trend="👨‍🌾"><div class="kl">Farmers FY30</div><div class="kv" id="kv-fa30">0</div><div class="kchg p" id="kd-fa30">loading…</div><div class="knote">Active network</div></div>
+    <div class="kc m" data-trend="💰"><div class="kl">Cumul. Free CF</div><div class="kv" id="kv-fcf">$0K</div><div class="kchg" id="kd-fcf">5-year total</div><div class="knote">After CapEx</div></div>
+    <div class="kc b" data-trend="🏦"><div class="kl">Implied Valuation</div><div class="kv" id="kv-val">$0M</div><div class="kchg" id="kd-val">EV/EBITDA</div><div class="knote">at 6× EBITDA FY30</div></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Revenue &amp; EBITDA – 5-Year Projection</div><div class="cs">Bars = Revenue · Line = EBITDA margin % · Adjust sliders above</div></div><span class="badge bg" id="proj-scen-badge">Base Case</span></div>
+      <canvas id="projChart" height="230"></canvas>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Scenario Comparison – Revenue Bridge</div><div class="cs">Bear / Base / Bull side-by-side</div></div></div>
+      <canvas id="scenChart" height="230"></canvas>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Product Revenue Mix – FY25–FY30</div><div class="cs">Stacked by product line over time</div></div></div>
+      <canvas id="mixChart" height="220"></canvas>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Farmer Network &amp; Revenue-per-Farmer</div><div class="cs">Left axis: farmers · Right axis: $/farmer/yr</div></div></div>
+      <canvas id="farmerChart" height="220"></canvas>
+    </div>
+  </div>
+</div><!-- /projections -->
+
+<!-- ──────── P&L MODEL ──────── -->
+<div id="tab-pnl" class="tc">
+  <div class="card">
+    <div class="ch">
+      <div><div class="ct">Income Statement – 5-Year Model (FY2025–FY2030)</div><div class="cs">USD '000 · Interactive: adjust drivers above to recalculate · Driver column shows formula/assumption</div></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="scenario-label label-base" id="pnl-scen-label">Base Case</span>
+        <button onclick="toggleRows()" style="background:var(--cl);border:1px solid var(--cm);color:var(--mt);font-size:10px;padding:4px 10px;border-radius:4px;cursor:pointer">± Detail Rows</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto">
+    <table class="mt mono" id="pnlTable">
+      <thead><tr>
+        <th style="text-align:left;width:22%">Line Item</th>
+        <th style="text-align:left;width:15%">Driver / Formula</th>
+        <th>FY25A</th><th>FY26F</th><th>FY27F</th><th>FY28F</th><th>FY29F</th><th>FY30F</th>
+        <th>CAGR</th>
+      </tr></thead>
+      <tbody id="pnlBody"></tbody>
+    </table>
+    </div>
+  </div>
+</div><!-- /pnl -->
+
+<!-- ──────── UNIT ECONOMICS ──────── -->
+<div id="tab-uniteconomics" class="tc">
+  <div class="g4">
+    <div class="card" style="grid-column:span 4">
+      <div class="ch"><div><div class="ct">Unit Economics Dashboard – Per Farmer · Per Kilogram · Per Export Contract</div><div class="cs">Adjust sliders to see real-time impact on unit-level profitability</div></div><span class="badge bg" id="ue-scen">Base Case</span></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div>
+      <div class="ue-grid" id="ueGrid"><!-- built by JS --></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Unit Margin Waterfall – Per Kg Vanilla</div><div class="cs">From farm-gate to net margin per kg exported</div></div></div>
+      <canvas id="ueWaterfallChart" height="260"></canvas>
+    </div>
+  </div>
+  <div class="card" style="margin-top:0">
+    <div class="ch"><div><div class="ct">Break-Even Analysis</div><div class="cs">Revenue required to cover all costs at different margin structures</div></div></div>
+    <canvas id="breakevenChart" height="160"></canvas>
+  </div>
+</div><!-- /uniteconomics -->
+
+<!-- ──────── SENSITIVITY ──────── -->
+<div id="tab-sensitivity" class="tc">
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Sensitivity: EBITDA FY28 vs Key Drivers</div><div class="cs">EBITDA ($K) at intersection of vanilla price × volume growth</div></div><span class="badge bg">FY2028</span></div>
+      <div class="sens-wrap"><table class="stbl" id="sensTable1"></table></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Sensitivity: Net Profit FY28 vs Cost Structure</div><div class="cs">Net profit ($K) at intersection of COGS% × OPEX growth</div></div><span class="badge ba">FY2028</span></div>
+      <div class="sens-wrap"><table class="stbl" id="sensTable2"></table></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Tornado Chart – FY30 EBITDA Sensitivity</div><div class="cs">Drivers ranked by impact on FY30 EBITDA (±1 standard deviation)</div></div></div>
+      <canvas id="tornadoChart" height="250"></canvas>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Monte Carlo – Probability Distribution of FY30 Revenue</div><div class="cs">5,000 simulations across all driver ranges · Click to resimulate</div></div>
+        <button onclick="runMonteCarlo()" style="background:var(--g2);color:var(--wh);border:none;padding:5px 12px;border-radius:5px;cursor:pointer;font-family:'DM Sans';font-size:10.5px;font-weight:600">↻ Re-run</button>
+      </div>
+      <canvas id="monteCarloChart" height="250"></canvas>
+    </div>
+  </div>
+</div><!-- /sensitivity -->
+
+<!-- ──────── DCF & VALUATION ──────── -->
+<div id="tab-dcf" class="tc">
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">DCF Valuation – Free Cash Flow Model</div><div class="cs">WACC from driver panel · Terminal growth rate: 3% · USD '000</div></div><span class="badge bb" id="dcf-wacc-badge">WACC: 12%</span></div>
+      <div style="overflow-x:auto"><table class="mt mono" id="dcfTable">
+        <thead><tr>
+          <th style="text-align:left">Line Item</th>
+          <th style="text-align:left">Formula</th>
+          <th>FY26F</th><th>FY27F</th><th>FY28F</th><th>FY29F</th><th>FY30F</th><th>Terminal</th>
+        </tr></thead>
+        <tbody id="dcfBody"></tbody>
+      </table></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Valuation Summary</div><div class="cs">EV ranges under different methodologies</div></div></div>
+      <div id="valSummary" style="padding:4px"></div>
+      <canvas id="valChart" height="200" style="margin-top:16px"></canvas>
+    </div>
+  </div>
+  <div class="card" style="margin-top:0">
+    <div class="ch"><div><div class="ct">EV/EBITDA Sensitivity Matrix – Enterprise Value ($M)</div><div class="cs">EBITDA multiple × WACC · Click any cell to see implied equity value</div></div></div>
+    <div class="sens-wrap"><table class="stbl" id="evTable"></table></div>
+  </div>
+</div><!-- /dcf -->
+
+</main>
+
+<footer class="ftr">
+  <div>Financial Model · <span>Verdana Organics Uganda Ltd</span> · <span>⚡ Power BI Portfolio Showcase</span> · For illustrative purposes only</div>
+  <div>Model date: <span>Feb 2026</span> · Advisor: <span>Ronald K. · Finance &amp; Analytics</span> · All figures illustrative</div>
+</footer>
+
+<script>
+// ──────────────────────────────────────────
+// CORE MODEL ENGINE
+// ──────────────────────────────────────────
+const C={g1:'#1C3A1E',g2:'#2C5F2D',g3:'#3D7A40',g4:'#5C8C3A',g5:'#7EAB52',
+  e1:'#8B5E3C',e2:'#C4956A',sn:'#D4A96A',vn:'#F5E6C8',rd:'#C0392B',
+  am:'#E67E22',bl:'#1565C0',lt:'#7A8C7A',cm:'#E5DDD3',wh:'#FFFFFF'};
+const bf={family:'DM Sans',size:10};const gc='#E5DDD3';
+
+const YEARS=['FY25A','FY26F','FY27F','FY28F','FY29F','FY30F'];
+const FYEARS=[2025,2026,2027,2028,2029,2030];
+
+// DRIVERS (live state)
+const D={
+  'vanilla-price':42,'coffee-price':3.80,'vol-growth':18,
+  'farmer-pct':34,'proc-cost':2.10,'opex-growth':8,
+  'farmers-base':4618,'farmer-add':800,'rev-farmer':720,
+  'gp-target':42,'ebitda-target':15,'wacc':12,
+  'capex':180,'interest':9,'loan':620,
+  'tax-rate':30,'debtor-days':45,'creditor-days':30
+};
+
+const SCENARIOS={
+  bear:{
+    'vanilla-price':28,'coffee-price':2.80,'vol-growth':8,
+    'farmer-pct':38,'proc-cost':2.80,'opex-growth':12,
+    'farmers-base':4618,'farmer-add':400,'rev-farmer':580,
+    'gp-target':34,'ebitda-target':8,'wacc':16,
+    'capex':120,'interest':11,'loan':620,
+    'tax-rate':30,'debtor-days':55,'creditor-days':25,
+    desc:'Commodity price shock, slow farmer growth, cost overruns',badge:'🐻 Bear'
+  },
+  base:{
+    'vanilla-price':42,'coffee-price':3.80,'vol-growth':18,
+    'farmer-pct':34,'proc-cost':2.10,'opex-growth':8,
+    'farmers-base':4618,'farmer-add':800,'rev-farmer':720,
+    'gp-target':42,'ebitda-target':15,'wacc':12,
+    'capex':180,'interest':9,'loan':620,
+    'tax-rate':30,'debtor-days':45,'creditor-days':30,
+    desc:'Steady growth, stable commodity prices, moderate farmer expansion',badge:'✦ Base'
+  },
+  bull:{
+    'vanilla-price':58,'coffee-price':5.20,'vol-growth':28,
+    'farmer-pct':30,'proc-cost':1.80,'opex-growth':6,
+    'farmers-base':4618,'farmer-add':1200,'rev-farmer':920,
+    'gp-target':50,'ebitda-target':22,'wacc':10,
+    'capex':240,'interest':8,'loan':620,
+    'tax-rate':30,'debtor-days':35,'creditor-days':35,
+    desc:'Premium pricing surge, strong farmer network, operational leverage',badge:'🐂 Bull'
+  }
+};
+let currentScenario='base';
+
+// ── MODEL COMPUTATION ──
+function computeModel(drivers=D){
+  const d=drivers;
+  const vg=d['vol-growth']/100;
+  const og=d['opex-growth']/100;
+  const fp=d['farmer-pct']/100;
+  const tax=d['tax-rate']/100;
+  const wacc=d['wacc']/100;
+  const int=d['interest']/100;
+
+  // Base revenue FY25 (actual)
+  const rev25=3220; // $3.22M FY25 annualised actual
+
+  const model=[];
+  for(let i=0;i<6;i++){
+    const yr=FYEARS[i];
+    // Revenue
+    const rev=i===0?rev25:model[i-1].rev*(1+vg);
+    const farmers=d['farmers-base']+i*d['farmer-add'];
+    const revPerFarmer=d['rev-farmer']*(1+i*0.04); // modest improvement
+
+    // Product mix (vanilla 54%, coffee 30%, pineapple 11%, jackfruit 5% – jackfruit grows)
+    const jfPct=Math.min(0.05+i*0.015,0.15);
+    const vanPct=0.54-i*0.02;
+    const cofPct=0.30-i*0.005;
+    const pinPct=1-vanPct-cofPct-jfPct;
+    const vanilla=rev*vanPct;
+    const coffee=rev*cofPct;
+    const pineapple=rev*pinPct;
+    const jackfruit=rev*jfPct;
+
+    // COGS
+    const farmerPmts=rev*fp;
+    const procVol=rev/d['vanilla-price']*d['proc-cost']*0.6+rev/d['coffee-price']*d['proc-cost']*0.3;
+    const procCost=Math.min(procVol,rev*0.18);
+    const certif=18+i*2;
+    const cogs=farmerPmts+procCost+certif;
+    const gp=rev-cogs;
+    const gpm=gp/rev;
+
+    // OPEX
+    const baseOpex=680;
+    const opex=i===0?baseOpex:model[i-1].opex*(1+og);
+    const ebitda=gp-opex;
+    const ebitdam=ebitda/rev;
+
+    // Below EBITDA
+    const depr=80+i*15;
+    const ebit=ebitda-depr;
+    const interestCost=d['loan']*(1-i*0.08)*int;
+    const ebt=ebit-Math.max(0,interestCost);
+    const taxCharge=Math.max(0,ebt*tax);
+    const netProfit=ebt-taxCharge;
+    const npm=netProfit/rev;
+
+    // Free Cash Flow
+    const capex=d['capex']*(1+i*0.1);
+    const wcChange=(rev-(i>0?model[i-1].rev:rev))*0.08;
+    const fcf=netProfit+depr-capex-Math.max(0,wcChange);
+
+    // PV
+    const pv=fcf/Math.pow(1+wacc,i+1);
+
+    model.push({yr,rev,vanilla,coffee,pineapple,jackfruit,farmers,revPerFarmer,
+      farmerPmts,procCost,certif,cogs,gp,gpm,opex,ebitda,ebitdam,
+      depr,ebit,interestCost:Math.max(0,interestCost),ebt,taxCharge,netProfit,npm,
+      capex,wcChange:Math.max(0,wcChange),fcf,pv,vanPct,cofPct,pinPct,jfPct});
+  }
+  return model;
+}
+
+let model=computeModel();
+
+// ── CHARTS ──
+// PROJECTION CHART
+const projCtx=document.getElementById('projChart').getContext('2d');
+const projChart=new Chart(projCtx,{
+  type:'bar',
+  data:{labels:YEARS,datasets:[
+    {label:'Revenue ($K)',data:[],backgroundColor:[C.g2,C.g3,C.g3,C.g4,C.g4,C.g5],borderRadius:4,yAxisID:'y'},
+    {label:'EBITDA Margin',data:[],type:'line',borderColor:C.sn,borderWidth:2.5,tension:.35,pointBackgroundColor:C.sn,pointRadius:5,fill:false,yAxisID:'y2'}
+  ]},
+  options:{responsive:true,maintainAspectRatio:true,animation:{duration:400},
+    plugins:{legend:{labels:{font:bf,color:C.lt}},tooltip:{callbacks:{
+      label:c=>c.datasetIndex===0?'Revenue: $'+c.raw.toFixed(0)+'K':'EBITDA Margin: '+c.raw.toFixed(1)+'%'
+    }}},
+    scales:{y:{grid:{color:gc},ticks:{font:bf,color:C.lt,callback:v=>'$'+v+'K'}},
+      y2:{position:'right',grid:{display:false},min:0,max:35,ticks:{font:bf,color:C.lt,callback:v=>v+'%'}},
+      x:{grid:{display:false},ticks:{font:bf,color:C.lt}}}}
+});
+
+// SCENARIO CHART
+const scenCtx=document.getElementById('scenChart').getContext('2d');
+const scenChart=new Chart(scenCtx,{
+  type:'line',
+  data:{labels:YEARS,datasets:[
+    {label:'🐻 Bear',data:[],borderColor:'#E87070',borderWidth:2,tension:.35,pointRadius:4,fill:false,borderDash:[4,3]},
+    {label:'✦ Base',data:[],borderColor:C.g2,borderWidth:2.5,tension:.35,pointRadius:5,fill:false},
+    {label:'🐂 Bull',data:[],borderColor:C.sn,borderWidth:2,tension:.35,pointRadius:4,fill:false,borderDash:[4,3]}
+  ]},
+  options:{responsive:true,maintainAspectRatio:true,animation:{duration:400},
+    plugins:{legend:{labels:{font:bf,color:C.lt}},tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.raw.toFixed(0)+'K'}}},
+    scales:{x:{grid:{display:false},ticks:{font:bf,color:C.lt}},
+      y:{grid:{color:gc},ticks:{font:bf,color:C.lt,callback:v=>'$'+v+'K'}}}}
+});
+
+// MIX CHART
+const mixCtx=document.getElementById('mixChart').getContext('2d');
+const mixChart=new Chart(mixCtx,{
+  type:'bar',
+  data:{labels:YEARS,datasets:[
+    {label:'Vanilla',data:[],backgroundColor:C.g2,borderRadius:3,stack:'s'},
+    {label:'Coffee', data:[],backgroundColor:C.g3,borderRadius:3,stack:'s'},
+    {label:'Pineapple',data:[],backgroundColor:C.e1,borderRadius:3,stack:'s'},
+    {label:'Jackfruit',data:[],backgroundColor:C.sn,borderRadius:3,stack:'s'}
+  ]},
+  options:{responsive:true,maintainAspectRatio:true,animation:{duration:400},
+    plugins:{legend:{labels:{font:bf,color:C.lt}},tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.raw.toFixed(0)+'K'}}},
+    scales:{x:{stacked:true,grid:{display:false},ticks:{font:bf,color:C.lt}},
+      y:{stacked:true,grid:{color:gc},ticks:{font:bf,color:C.lt,callback:v=>'$'+v+'K'}}}}
+});
+
+// FARMER CHART
+const farmerCtx=document.getElementById('farmerChart').getContext('2d');
+const farmerChart=new Chart(farmerCtx,{
+  type:'bar',
+  data:{labels:YEARS,datasets:[
+    {label:'Farmers',data:[],backgroundColor:C.g4+'AA',borderRadius:3,yAxisID:'y'},
+    {label:'Rev/Farmer ($/yr)',data:[],type:'line',borderColor:C.sn,borderWidth:2.5,tension:.35,pointRadius:5,fill:false,yAxisID:'y2'}
+  ]},
+  options:{responsive:true,maintainAspectRatio:true,animation:{duration:400},
+    plugins:{legend:{labels:{font:bf,color:C.lt}}},
+    scales:{y:{grid:{color:gc},ticks:{font:bf,color:C.lt}},
+      y2:{position:'right',grid:{display:false},ticks:{font:bf,color:C.lt,callback:v=>'$'+v}},
+      x:{grid:{display:false},ticks:{font:bf,color:C.lt}}}}
+});
+
+// TORNADO CHART
+const tornadoCtx=document.getElementById('tornadoChart').getContext('2d');
+let tornadoChart=null;
+
+// MONTE CARLO CHART
+const mcCtx=document.getElementById('monteCarloChart').getContext('2d');
+let mcChart=null;
+
+// UE WATERFALL
+const ueWfCtx=document.getElementById('ueWaterfallChart').getContext('2d');
+let ueWfChart=null;
+
+// BREAKEVEN
+const beCtx=document.getElementById('breakevenChart').getContext('2d');
+let beChart=null;
+
+// DCF CHART
+const valCtx=document.getElementById('valChart').getContext('2d');
+let valChart=null;
+
+// ── UPDATE ALL ──
+function updateCharts(m){
+  // Projection
+  projChart.data.datasets[0].data=m.map(r=>+r.rev.toFixed(0));
+  projChart.data.datasets[1].data=m.map(r=>+(r.ebitdam*100).toFixed(1));
+  projChart.update('active');
+
+  // Scenario comparison
+  const bear=computeModel(SCENARIOS.bear);
+  const base=computeModel(SCENARIOS.base);
+  const bull=computeModel(SCENARIOS.bull);
+  scenChart.data.datasets[0].data=bear.map(r=>+r.rev.toFixed(0));
+  scenChart.data.datasets[1].data=base.map(r=>+r.rev.toFixed(0));
+  scenChart.data.datasets[2].data=bull.map(r=>+r.rev.toFixed(0));
+  scenChart.update('active');
+
+  // Mix
+  mixChart.data.datasets[0].data=m.map(r=>+r.vanilla.toFixed(0));
+  mixChart.data.datasets[1].data=m.map(r=>+r.coffee.toFixed(0));
+  mixChart.data.datasets[2].data=m.map(r=>+r.pineapple.toFixed(0));
+  mixChart.data.datasets[3].data=m.map(r=>+r.jackfruit.toFixed(0));
+  mixChart.update('active');
+
+  // Farmer
+  farmerChart.data.datasets[0].data=m.map(r=>+r.farmers.toFixed(0));
+  farmerChart.data.datasets[1].data=m.map(r=>+r.revPerFarmer.toFixed(0));
+  farmerChart.update('active');
+}
+
+function updateKPIs(m){
+  const last=m[5];
+  const cagr=((last.rev/m[0].rev)**(1/5)-1)*100;
+  const totalFcf=m.reduce((s,r)=>s+r.fcf,0);
+  const impliedVal=last.ebitda*6/1000;
+
+  setKV('kv-rev30','$'+(last.rev/1000).toFixed(1)+'M');
+  setKV('kv-eb30','$'+last.ebitda.toFixed(0)+'K');
+  setKV('kv-np30','$'+last.netProfit.toFixed(0)+'K');
+  setKV('kv-fa30',last.farmers.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,','));
+  setKV('kv-fcf','$'+(totalFcf/1000).toFixed(1)+'M');
+  setKV('kv-val','$'+impliedVal.toFixed(1)+'M');
+
+  document.getElementById('kd-rev30').textContent='CAGR: '+cagr.toFixed(1)+'%';
+  document.getElementById('kd-eb30').textContent='Margin: '+(last.ebitdam*100).toFixed(1)+'%';
+  document.getElementById('kd-np30').textContent='Net margin: '+(last.npm*100).toFixed(1)+'%';
+  document.getElementById('kd-fa30').textContent='+'+(m[5].farmers-m[0].farmers).toFixed(0)+' net adds';
+  document.getElementById('kd-fcf').textContent=totalFcf>0?'Cumulative positive':'Net negative';
+  document.getElementById('kd-val').textContent='6× EBITDA multiple';
+}
+
+function setKV(id,v){
+  const el=document.getElementById(id);
+  if(el&&el.textContent!==v){el.textContent=v;el.classList.remove('updated');void el.offsetWidth;el.classList.add('updated');}
+}
+
+// ── PnL TABLE ──
+let showDetail=true;
+function toggleRows(){showDetail=!showDetail;buildPnL(model);}
+
+function buildPnL(m){
+  const b=document.getElementById('pnlBody');
+  b.innerHTML='';
+  const rows=[
+    {label:'REVENUE',isSection:true},
+    {label:'Vanilla exports',driver:'Price×Vol',fn:r=>r.vanilla,show:'detail'},
+    {label:'Arabica coffee',driver:'Price×Vol',fn:r=>r.coffee,show:'detail'},
+    {label:'Dried pineapple',driver:'Mix%×Rev',fn:r=>r.pineapple,show:'detail'},
+    {label:'Jackfruit',driver:'Mix%×Rev',fn:r=>r.jackfruit,show:'detail'},
+    {label:'Total Revenue',driver:'Sum',fn:r=>r.rev,isTotal:true},
+    {label:'COST OF GOODS SOLD',isSection:true},
+    {label:'Farmer payments',driver:'Rev×'+D['farmer-pct']+'%',fn:r=>-r.farmerPmts,show:'detail'},
+    {label:'Processing costs',driver:'$'+D['proc-cost']+'/kg',fn:r=>-r.procCost,show:'detail'},
+    {label:'Certification',driver:'Fixed+$2K/yr',fn:r=>-r.certif,show:'detail'},
+    {label:'Total COGS',driver:'Sum',fn:r=>-r.cogs,isSubTotal:true},
+    {label:'Gross Profit',driver:'Rev–COGS',fn:r=>r.gp,isTotal:true},
+    {label:'GP Margin %',driver:'GP/Rev',fn:r=>r.gpm,isPct:true},
+    {label:'OPERATING EXPENSES',isSection:true},
+    {label:'Total OPEX',driver:'Prior×'+D['opex-growth']+'% growth',fn:r=>-r.opex},
+    {label:'EBITDA',driver:'GP–OPEX',fn:r=>r.ebitda,isTotal:true},
+    {label:'EBITDA Margin %',driver:'EBITDA/Rev',fn:r=>r.ebitdam,isPct:true},
+    {label:'Depreciation',driver:'$'+(80)+'K+$15K/yr',fn:r=>-r.depr,show:'detail'},
+    {label:'EBIT',driver:'EBITDA–D&A',fn:r=>r.ebit,isSubTotal:true,show:'detail'},
+    {label:'Interest expense',driver:D['interest']+'% × Loan',fn:r=>-r.interestCost,show:'detail'},
+    {label:'EBT',driver:'EBIT–Interest',fn:r=>r.ebt,isSubTotal:true,show:'detail'},
+    {label:'Tax charge',driver:D['tax-rate']+'% × EBT',fn:r=>-r.taxCharge,show:'detail'},
+    {label:'Net Profit',driver:'EBT–Tax',fn:r=>r.netProfit,isTotal:true},
+    {label:'Net Margin %',driver:'NP/Rev',fn:r=>r.npm,isPct:true},
+    {label:'FREE CASH FLOW',isSection:true},
+    {label:'+ Depreciation add-back',driver:'Non-cash',fn:r=>r.depr,show:'detail'},
+    {label:'– Capital expenditure',driver:'$'+D['capex']+'K base',fn:r=>-r.capex},
+    {label:'– Working cap change',driver:'ΔRev×8%',fn:r=>-r.wcChange,show:'detail'},
+    {label:'Free Cash Flow',driver:'NP+D–CapEx–WC',fn:r=>r.fcf,isTotal:true},
+  ];
+
+  rows.forEach((row,ri)=>{
+    if(row.isSection){
+      const tr=document.createElement('tr');tr.className='sec';
+      tr.innerHTML=`<td colspan="9">${row.label}</td>`;b.appendChild(tr);return;
+    }
+    if(row.show==='detail'&&!showDetail)return;
+    const tr=document.createElement('tr');
+    if(row.isTotal)tr.className='tot';
+    else if(row.isSubTotal)tr.className='subtot';
+
+    let cells='';
+    m.forEach((yr,i)=>{
+      const v=row.fn(yr);
+      let disp;
+      if(row.isPct) disp=(v*100).toFixed(1)+'%';
+      else disp=(v>=0?'':'')+Math.abs(v).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+      const cls=row.isPct?(v>0.1?'pos':v<0?'neg':'neu'):(v>=0?'':'neg');
+      cells+=`<td class="${cls}" title="${v.toFixed(1)}">${v<0&&!row.isPct?'('+Math.abs(v).toFixed(0)+')':disp}</td>`;
+    });
+
+    const cagrV=(()=>{
+      if(row.isPct)return '';
+      const v0=row.fn(m[0]);const v5=row.fn(m[5]);
+      if(v0>0&&v5>0)return ((Math.pow(Math.abs(v5/v0),1/5)-1)*100).toFixed(0)+'%';
+      return '–';
+    })();
+
+    tr.innerHTML=`<td>${row.label}</td><td style="font-family:var(--mono);font-size:9.5px;color:var(--lt)">${row.driver||''}</td>${cells}<td class="pos" style="font-size:10px">${cagrV}</td>`;
+    b.appendChild(tr);
+  });
+}
+
+// ── UNIT ECONOMICS ──
+function buildUE(m){
+  const r=m[1]; // FY26 as representative
+  const kgVanilla=r.vanilla/D['vanilla-price'];
+  const farmGateVan=D['vanilla-price']*0.55;
+  const cureProcess=D['proc-cost'];
+  const certKg=r.certif/kgVanilla;
+  const logisticsKg=3.2;
+  const marketingKg=0.8;
+  const overheadKg=r.opex/kgVanilla*0.4;
+  const totalCostKg=farmGateVan+cureProcess+certKg+logisticsKg+marketingKg+overheadKg;
+  const netMarginKg=D['vanilla-price']-totalCostKg;
+
+  const revenuePerFarmer=r.revPerFarmer;
+  const cogsPerFarmer=r.cogs/r.farmers;
+  const opexPerFarmer=r.opex/r.farmers;
+  const ebitdaPerFarmer=revenuePerFarmer-cogsPerFarmer-opexPerFarmer;
+
+  const g=document.getElementById('ueGrid');
+  g.innerHTML=`
+    <div class="ue-card"><div class="ue-title">🌿 Per Kg Vanilla Exported</div><div class="ue-rows">
+      <div class="ue-row"><span class="ue-lbl">Selling price / kg</span><span class="ue-val" style="color:var(--g2)">$${D['vanilla-price'].toFixed(2)}</span></div>
+      <div class="ue-row"><span class="ue-lbl">Farm-gate price (55%)</span><span class="ue-val" style="color:var(--e1)">($${farmGateVan.toFixed(2)})</span></div>
+      <div class="ue-row"><span class="ue-lbl">Curing &amp; processing</span><span class="ue-val" style="color:var(--e1)">($${cureProcess.toFixed(2)})</span></div>
+      <div class="ue-row"><span class="ue-lbl">Certification / kg</span><span class="ue-val" style="color:var(--e1)">($${certKg.toFixed(2)})</span></div>
+      <div class="ue-row"><span class="ue-lbl">Logistics &amp; freight</span><span class="ue-val" style="color:var(--e1)">($${logisticsKg.toFixed(2)})</span></div>
+      <div class="ue-row"><span class="ue-lbl">Marketing overhead</span><span class="ue-val" style="color:var(--e1)">($${marketingKg.toFixed(2)})</span></div>
+      <div class="ue-row total"><span class="ue-lbl">Net margin / kg</span><span class="ue-val">$${netMarginKg.toFixed(2)}</span></div>
+      <div class="ue-row"><span class="ue-lbl">Margin %</span><span class="ue-val">${((netMarginKg/D['vanilla-price'])*100).toFixed(1)}%</span></div>
+    </div></div>
+
+    <div class="ue-card"><div class="ue-title">👨‍🌾 Per Farmer Economics (FY26F)</div><div class="ue-rows">
+      <div class="ue-row"><span class="ue-lbl">Revenue / farmer / yr</span><span class="ue-val" style="color:var(--g2)">$${revenuePerFarmer.toFixed(0)}</span></div>
+      <div class="ue-row"><span class="ue-lbl">COGS / farmer</span><span class="ue-val" style="color:var(--e1)">($${cogsPerFarmer.toFixed(0)})</span></div>
+      <div class="ue-row"><span class="ue-lbl">OPEX allocation</span><span class="ue-val" style="color:var(--e1)">($${opexPerFarmer.toFixed(0)})</span></div>
+      <div class="ue-row total"><span class="ue-lbl">EBITDA / farmer</span><span class="ue-val">$${ebitdaPerFarmer.toFixed(0)}</span></div>
+      <div class="ue-row"><span class="ue-lbl">EBITDA margin</span><span class="ue-val">${((ebitdaPerFarmer/revenuePerFarmer)*100).toFixed(1)}%</span></div>
+      <div class="ue-row"><span class="ue-lbl">Farmer income uplift</span><span class="ue-val" style="color:var(--g2)">+31% vs non-VOF</span></div>
+      <div class="ue-row"><span class="ue-lbl">Payback on farmer</span><span class="ue-val">${(80/ebitdaPerFarmer).toFixed(1)} yrs</span></div>
+    </div></div>
+
+    <div class="ue-card"><div class="ue-title">☕ Per Kg Coffee</div><div class="ue-rows">
+      <div class="ue-row"><span class="ue-lbl">Export price / kg</span><span class="ue-val" style="color:var(--g2)">$${(D['coffee-price']*2.2).toFixed(2)}</span></div>
+      <div class="ue-row"><span class="ue-lbl">Farm-gate (60%)</span><span class="ue-val" style="color:var(--e1)">($${(D['coffee-price']*2.2*0.60).toFixed(2)})</span></div>
+      <div class="ue-row"><span class="ue-lbl">Washing &amp; milling</span><span class="ue-val" style="color:var(--e1)">($${(D['proc-cost']*0.8).toFixed(2)})</span></div>
+      <div class="ue-row"><span class="ue-lbl">Export costs</span><span class="ue-val" style="color:var(--e1)">($1.20)</span></div>
+      <div class="ue-row total"><span class="ue-lbl">Net margin / kg</span><span class="ue-val">$${(D['coffee-price']*2.2*0.40-D['proc-cost']*0.8-1.20).toFixed(2)}</span></div>
+      <div class="ue-row"><span class="ue-lbl">Volume FY26F (MT)</span><span class="ue-val">${(r.coffee/(D['coffee-price']*2.2)/1).toFixed(0)} MT</span></div>
+    </div></div>
+
+    <div class="ue-card"><div class="ue-title">📦 Per Export Container</div><div class="ue-rows">
+      <div class="ue-row"><span class="ue-lbl">Container value (avg)</span><span class="ue-val" style="color:var(--g2)">$${(D['vanilla-price']*280).toFixed(0)}</span></div>
+      <div class="ue-row"><span class="ue-lbl">Container COGS</span><span class="ue-val" style="color:var(--e1)">($${(D['vanilla-price']*280*(1-r.gpm)).toFixed(0)})</span></div>
+      <div class="ue-row"><span class="ue-lbl">Freight &amp; insurance</span><span class="ue-val" style="color:var(--e1)">($2,800)</span></div>
+      <div class="ue-row"><span class="ue-lbl">Documentation</span><span class="ue-val" style="color:var(--e1)">($450)</span></div>
+      <div class="ue-row total"><span class="ue-lbl">Net per container</span><span class="ue-val">$${(D['vanilla-price']*280*r.gpm-3250).toFixed(0)}</span></div>
+      <div class="ue-row"><span class="ue-lbl">Containers / yr FY26</span><span class="ue-val">${(r.rev/(D['vanilla-price']*280)/1).toFixed(0)} est.</span></div>
+    </div></div>
+  `;
+
+  // UE Waterfall
+  const farmGate=parseFloat(farmGateVan.toFixed(2));
+  const proc=parseFloat(cureProcess.toFixed(2));
+  const cert=parseFloat(certKg.toFixed(2));
+  const logs=logisticsKg;
+  const mktg=marketingKg;
+  const ohd=parseFloat(overheadKg.toFixed(2));
+  const price=parseFloat(D['vanilla-price']);
+  const margin=parseFloat(netMarginKg.toFixed(2));
+
+  const wfLabels=['Selling Price','Farm-Gate','Processing','Certification','Logistics','Marketing','Overhead','Net Margin'];
+  const wfData=[price,-farmGate,-proc,-cert,-logs,-mktg,-ohd,margin];
+  const wfColors=[C.g2,C.e1,C.e1,C.e1,C.e1,C.e1,C.e1,margin>0?C.g4:C.rd];
+
+  if(ueWfChart)ueWfChart.destroy();
+  window.ueWfChart=new Chart(ueWfCtx,{
+    type:'bar',
+    data:{labels:wfLabels,datasets:[{data:wfData,backgroundColor:wfColors,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:true,animation:{duration:400},indexAxis:'y',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw>=0?'+$'+c.raw.toFixed(2)+'/kg':'($'+Math.abs(c.raw).toFixed(2)+'/kg)'}}},
+      scales:{y:{grid:{display:false},ticks:{font:bf,color:C.lt}},
+        x:{grid:{color:gc},ticks:{font:bf,color:C.lt,callback:v=>'$'+v+'/kg'}}}}
+  });
+
+  // Breakeven
+  const fixedCosts=m[1].opex+m[1].certif;
+  const varCostPct=1-m[1].gpm;
+  const breakEvenRev=fixedCosts/(1-varCostPct);
+  const revRange=[1000,2000,3000,4000,5000,6000];
+  if(beChart)beChart.destroy();
+  window.beChart=new Chart(beCtx,{
+    type:'line',
+    data:{labels:revRange.map(v=>'$'+v+'K'),datasets:[
+      {label:'Total Revenue',data:revRange,borderColor:C.g2,borderWidth:2,tension:.1,fill:false,pointRadius:3},
+      {label:'Total Costs',data:revRange.map(v=>fixedCosts+v*varCostPct),borderColor:C.e1,borderWidth:2,tension:.1,fill:false,pointRadius:3},
+      {label:'Fixed Costs',data:revRange.map(()=>fixedCosts),borderColor:C.lt,borderWidth:1.5,tension:0,fill:false,borderDash:[4,4],pointRadius:0}
+    ]},
+    options:{responsive:true,maintainAspectRatio:true,animation:{duration:300},
+      plugins:{legend:{labels:{font:bf,color:C.lt}}},
+      scales:{x:{grid:{display:false},ticks:{font:bf,color:C.lt}},
+        y:{grid:{color:gc},ticks:{font:bf,color:C.lt,callback:v=>'$'+v+'K'}}}}
+  });
+}
+
+// ── SENSITIVITY ──
+function buildSensitivity(){
+  const vanPrices=[25,30,35,42,50,60,75];
+  const volGrowths=[5,10,15,18,22,28,35];
+
+  // Table 1: EBITDA vs Vanilla Price × Volume Growth
+  const t1=document.getElementById('sensTable1');
+  t1.innerHTML='';
+  let h='<tr><th>Vol Growth ↓<br>Vanilla →</th>';
+  volGrowths.forEach(v=>h+=`<th>${v}%</th>`);
+  h+='</tr>';t1.innerHTML=h;
+
+  vanPrices.forEach(vp=>{
+    let row=`<tr><td>$${vp}/kg</td>`;
+    volGrowths.forEach(vg=>{
+      const td={...D,'vanilla-price':vp,'vol-growth':vg};
+      const m=computeModel(td);
+      const eb=m[3].ebitda; // FY28
+      const cls=eb>600?'cell-vhigh':eb>400?'cell-high':eb>200?'cell-med':eb>0?'cell-low':eb>-200?'cell-neg':'cell-vneg';
+      row+=`<td class="${cls}" title="FY28 EBITDA @ vanilla $${vp}, vol +${vg}%">$${eb.toFixed(0)}</td>`;
+    });
+    row+='</tr>';t1.innerHTML+=row;
+  });
+
+  // Table 2: Net Profit vs COGS% × OPEX growth
+  const cogsPcts=[28,30,32,34,38,42,46];
+  const opexGs=[4,6,8,10,14,18,22];
+  const t2=document.getElementById('sensTable2');
+  t2.innerHTML='';
+  let h2='<tr><th>OPEX Gr ↓<br>COGS % →</th>';
+  opexGs.forEach(v=>h2+=`<th>${v}%</th>`);
+  h2+='</tr>';t2.innerHTML=h2;
+
+  cogsPcts.forEach(cp=>{
+    let row=`<tr><td>COGS ${cp}%</td>`;
+    opexGs.forEach(og=>{
+      const td={...D,'farmer-pct':cp,'opex-growth':og};
+      const m=computeModel(td);
+      const np=m[3].netProfit;
+      const cls=np>400?'cell-vhigh':np>200?'cell-high':np>50?'cell-med':np>0?'cell-low':np>-200?'cell-neg':'cell-vneg';
+      row+=`<td class="${cls}">$${np.toFixed(0)}</td>`;
+    });
+    row+='</tr>';t2.innerHTML+=row;
+  });
+
+  // Tornado
+  const base=computeModel(D);
+  const baseEB30=base[5].ebitda;
+  const drivers2=[
+    {name:'Vanilla Price',key:'vanilla-price',lo:28,hi:65},
+    {name:'Volume Growth',key:'vol-growth',lo:8,hi:30},
+    {name:'Farmer Cost %',key:'farmer-pct',lo:28,hi:44},
+    {name:'OPEX Growth',key:'opex-growth',lo:4,hi:16},
+    {name:'Processing $/kg',key:'proc-cost',lo:1.5,hi:3.5},
+    {name:'Rev/Farmer',key:'rev-farmer',lo:500,hi:1000},
+    {name:'Farmer Adds/yr',key:'farmer-add',lo:300,hi:1400},
+  ];
+  const tData=drivers2.map(dr=>{
+    const lo={...D,[dr.key]:dr.lo};const hi={...D,[dr.key]:dr.hi};
+    const loEB=computeModel(lo)[5].ebitda;
+    const hiEB=computeModel(hi)[5].ebitda;
+    return{name:dr.name,lo:Math.min(loEB,hiEB)-baseEB30,hi:Math.max(loEB,hiEB)-baseEB30};
+  }).sort((a,b)=>(b.hi-b.lo)-(a.hi-a.lo));
+
+  if(tornadoChart)tornadoChart.destroy();
+  window.tornadoChart=new Chart(tornadoCtx,{
+    type:'bar',
+    data:{labels:tData.map(d=>d.name),
+      datasets:[
+        {label:'Upside',data:tData.map(d=>d.hi),backgroundColor:C.g2,borderRadius:3,stack:'s'},
+        {label:'Downside',data:tData.map(d=>d.lo),backgroundColor:C.rd,borderRadius:3,stack:'s'}
+      ]},
+    options:{responsive:true,maintainAspectRatio:true,indexAxis:'y',animation:{duration:400},
+      plugins:{legend:{labels:{font:bf,color:C.lt}},
+        tooltip:{callbacks:{label:c=>(c.raw>=0?'+':'')+'$'+c.raw.toFixed(0)+'K vs base'}}},
+      scales:{y:{grid:{display:false},ticks:{font:bf,color:C.lt}},
+        x:{grid:{color:gc},ticks:{font:bf,color:C.lt,callback:v=>(v>=0?'+':'')+'$'+v+'K'}}}}
+  });
+}
+
+// ── MONTE CARLO ──
+function runMonteCarlo(){
+  const n=2000;
+  const results=[];
+  for(let i=0;i<n;i++){
+    const vp=D['vanilla-price']*(0.7+Math.random()*0.6);
+    const vg=D['vol-growth']*(0.5+Math.random()*1.0);
+    const fp=D['farmer-pct']*(0.85+Math.random()*0.3);
+    const og=D['opex-growth']*(0.6+Math.random()*0.8);
+    const td={...D,'vanilla-price':vp,'vol-growth':vg,'farmer-pct':fp,'opex-growth':og};
+    const m=computeModel(td);
+    results.push(m[5].rev);
+  }
+  results.sort((a,b)=>a-b);
+  const min=results[0];const max=results[n-1];
+  const bins=30;const binSize=(max-min)/bins;
+  const hist=Array(bins).fill(0);
+  results.forEach(r=>{ const b=Math.min(Math.floor((r-min)/binSize),bins-1); hist[b]++; });
+  const labels=Array.from({length:bins},(_,i)=>'$'+(min+i*binSize).toFixed(0));
+
+  const p5=results[Math.floor(n*0.05)];
+  const p50=results[Math.floor(n*0.50)];
+  const p95=results[Math.floor(n*0.95)];
+
+  if(mcChart)mcChart.destroy();
+  window.mcChart=new Chart(mcCtx,{
+    type:'bar',
+    data:{labels,datasets:[{label:'Simulations',data:hist,
+      backgroundColor:labels.map((_,i)=>{
+        const v=min+i*binSize;
+        return v<p5?C.rd:v<p50?C.g4:v<p95?C.g2:C.sn;
+      }),borderRadius:2}]},
+    options:{responsive:true,maintainAspectRatio:true,animation:{duration:600},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+' simulations'}}},
+      scales:{x:{grid:{display:false},ticks:{font:{family:'DM Sans',size:8.5},color:C.lt,maxRotation:45,maxTicksLimit:8}},
+        y:{grid:{color:gc},ticks:{font:bf,color:C.lt}}}}
+  });
+  document.querySelector('#tab-sensitivity .card:nth-child(2) .cs').textContent=
+    `P5: $${p5.toFixed(0)}K | Median: $${p50.toFixed(0)}K | P95: $${p95.toFixed(0)}K`;
+}
+
+// ── DCF ──
+function buildDCF(m){
+  const wacc=D['wacc']/100;const tgr=0.03;
+  const b=document.getElementById('dcfBody');
+  b.innerHTML='';
+  document.getElementById('dcf-wacc-badge').textContent='WACC: '+D['wacc']+'%';
+
+  // Terminal value
+  const tv=m[5].fcf*(1+tgr)/(wacc-tgr);
+  const pvTV=tv/Math.pow(1+wacc,5);
+  const sumPV=m.slice(1).reduce((s,r)=>s+r.pv,0);
+  const ev=sumPV+pvTV;
+
+  const dcfRows=[
+    {l:'EBITDA',f:'From P&L',vals:m.slice(1).map(r=>r.ebitda.toFixed(0))},
+    {l:'– Depreciation',f:'Straight-line',vals:m.slice(1).map(r=>(-r.depr).toFixed(0))},
+    {l:'EBIT',f:'EBITDA–D&A',vals:m.slice(1).map(r=>r.ebit.toFixed(0))},
+    {l:'– Taxes on EBIT',f:D['tax-rate']+'% of EBIT',vals:m.slice(1).map(r=>(-(Math.max(0,r.ebit)*D['tax-rate']/100)).toFixed(0))},
+    {l:'NOPAT',f:'After-tax EBIT',vals:m.slice(1).map(r=>(r.ebit*(1-D['tax-rate']/100)).toFixed(0)),isSub:true},
+    {l:'+ D&A add-back',f:'Non-cash',vals:m.slice(1).map(r=>r.depr.toFixed(0))},
+    {l:'– CapEx',f:'$'+D['capex']+'K base',vals:m.slice(1).map(r=>(-r.capex).toFixed(0))},
+    {l:'– WC change',f:'ΔRev×8%',vals:m.slice(1).map(r=>(-r.wcChange).toFixed(0))},
+    {l:'Unlevered FCF',f:'NOPAT+D–Capex–WC',vals:m.slice(1).map(r=>r.fcf.toFixed(0)),isTotal:true},
+    {l:'Discount factor',f:'1/(1+'+D['wacc']+'%)^n',vals:m.slice(1).map((_,i)=>(1/Math.pow(1+wacc,i+1)).toFixed(4)),isPure:true},
+    {l:'PV of FCF',f:'FCF × Factor',vals:m.slice(1).map(r=>r.pv.toFixed(0)),isTotal:true},
+    {l:'Sum PV of FCFs',f:'FY26–FY30',vals:['','','','',sumPV.toFixed(0),''],isTotal:true},
+    {l:'Terminal value',f:'FCF×(1+3%)/(WACC–3%)',vals:['','','','','',tv.toFixed(0)],isTotal:true},
+    {l:'PV of terminal value',f:'TV/(1+WACC)^5',vals:['','','','','',pvTV.toFixed(0)]},
+    {l:'Enterprise Value',f:'ΣPV+PV(TV)',vals:['','','','','',ev.toFixed(0)],isTotal:true},
+  ];
+
+  dcfRows.forEach(row=>{
+    const tr=document.createElement('tr');
+    if(row.isTotal)tr.className='tot';else if(row.isSub)tr.className='subtot';
+    let cells=row.vals.map(v=>{
+      if(!v)return '<td>–</td>';
+      const n=parseFloat(v);
+      const cls=row.isPure?'':n>=0?'pos':'neg';
+      return `<td class="${cls}">${row.isPure?v:n<0?'('+Math.abs(n).toFixed(0)+')':n.toFixed(0)}</td>`;
+    }).join('');
+    tr.innerHTML=`<td>${row.l}</td><td style="font-size:9.5px;color:var(--lt)">${row.f||''}</td>${cells}<td></td>`;
+    b.appendChild(tr);
+  });
+
+  // Valuation summary
+  const evEBITDA6=m[5].ebitda*6/1000;
+  const evEBITDA8=m[5].ebitda*8/1000;
+  const evRev1=m[5].rev*1/1000;
+  const dcfVal=ev/1000;
+  document.getElementById('valSummary').innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+      <div style="background:var(--cl);border-radius:8px;padding:12px;border:1px solid var(--cm)">
+        <div style="font-size:9px;font-weight:700;color:var(--lt);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">DCF Valuation</div>
+        <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--g2)">$${dcfVal.toFixed(1)}M</div>
+        <div style="font-size:9.5px;color:var(--lt)">WACC ${D['wacc']}% · TGR 3%</div>
+      </div>
+      <div style="background:var(--cl);border-radius:8px;padding:12px;border:1px solid var(--cm)">
+        <div style="font-size:9px;font-weight:700;color:var(--lt);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">6× EBITDA FY30</div>
+        <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--g2)">$${evEBITDA6.toFixed(1)}M</div>
+        <div style="font-size:9.5px;color:var(--lt)">Conservative multiple</div>
+      </div>
+      <div style="background:var(--cl);border-radius:8px;padding:12px;border:1px solid var(--cm)">
+        <div style="font-size:9px;font-weight:700;color:var(--lt);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">8× EBITDA FY30</div>
+        <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--g3)">$${evEBITDA8.toFixed(1)}M</div>
+        <div style="font-size:9.5px;color:var(--lt)">Premium multiple</div>
+      </div>
+      <div style="background:var(--cl);border-radius:8px;padding:12px;border:1px solid var(--cm)">
+        <div style="font-size:9px;font-weight:700;color:var(--lt);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">1× Revenue FY30</div>
+        <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--e1)">$${evRev1.toFixed(1)}M</div>
+        <div style="font-size:9.5px;color:var(--lt)">Revenue multiple (floor)</div>
+      </div>
+    </div>`;
+
+  // Val chart
+  if(valChart)valChart.destroy();
+  window.valChart=new Chart(valCtx,{
+    type:'bar',
+    data:{labels:['DCF','6× EBITDA','8× EBITDA','1× Revenue'],
+      datasets:[{data:[dcfVal,evEBITDA6,evEBITDA8,evRev1],
+        backgroundColor:[C.bl,C.g2,C.g3,C.e1],borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:true,animation:{duration:400},indexAxis:'y',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+c.raw.toFixed(1)+'M'}}},
+      scales:{y:{grid:{display:false},ticks:{font:bf,color:C.lt}},
+        x:{grid:{color:gc},ticks:{font:bf,color:C.lt,callback:v=>'$'+v+'M'}}}}
+  });
+
+  // EV sensitivity table
+  const multiples=[4,5,6,7,8,10,12];
+  const waccs=[8,10,12,14,16,18,20];
+  const ev2=document.getElementById('evTable');
+  ev2.innerHTML='';
+  let h='<tr><th>WACC ↓<br>Multiple →</th>';
+  waccs.forEach(w=>h+=`<th>${w}%</th>`);h+='</tr>';ev2.innerHTML=h;
+  multiples.forEach(mu=>{
+    let row=`<tr><td>${mu}× EBITDA</td>`;
+    waccs.forEach(w=>{
+      const td={...D,'wacc':w};
+      const m2=computeModel(td);
+      const evM=m2[5].ebitda*mu/1000;
+      const cls=evM>12?'cell-vhigh':evM>8?'cell-high':evM>5?'cell-med':evM>3?'cell-low':evM>1?'cell-neg':'cell-vneg';
+      row+=`<td class="${cls}" onclick="alert('EV $${evM.toFixed(1)}M\n${mu}× EBITDA FY30 @ WACC ${w}%')" title="${mu}× × WACC ${w}%">$${evM.toFixed(1)}M</td>`;
+    });
+    row+='</tr>';ev2.innerHTML+=row;
+  });
+}
+
+// ── MASTER RECALCULATE ──
+function recalcAll(){
+  model=computeModel(D);
+  updateKPIs(model);
+  updateCharts(model);
+  buildPnL(model);
+  buildUE(model);
+  buildSensitivity();
+  buildDCF(model);
+}
+
+// ── DRIVER UPDATE ──
+function updateDriver(key,val){
+  const numVal=parseFloat(val);
+  D[key]=numVal;
+  const dispEl=document.getElementById('v-'+key);
+  if(!dispEl)return;
+  if(key.includes('pct')||key.includes('growth')||key.includes('rate')||key.includes('target')||key.includes('wacc')||key.includes('interest'))
+    dispEl.textContent=numVal+'%';
+  else if(key.includes('price')&&key!='vanilla-price')
+    dispEl.textContent=numVal.toFixed(2);
+  else if(key.includes('cost')&&key!='proc-cost')
+    dispEl.textContent=numVal;
+  else if(key==='proc-cost')
+    dispEl.textContent=numVal.toFixed(2);
+  else
+    dispEl.textContent=numVal;
+}
+
+// ── SCENARIO ──
+function setScenario(s,btn){
+  currentScenario=s;
+  document.querySelectorAll('.sb').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  const sc=SCENARIOS[s];
+  // Apply scenario to D
+  Object.assign(D,sc);
+  // Update sliders and displays
+  Object.keys(sc).forEach(key=>{
+    if(key==='desc'||key==='badge')return;
+    const sl=document.getElementById('r-'+key);
+    if(sl)sl.value=sc[key];
+    updateDriver(key,sc[key]);
+  });
+  document.getElementById('scen-desc').textContent=sc.desc;
+  const badge=document.getElementById('scen-badge');
+  badge.textContent=sc.badge;
+  badge.style.background=s==='bear'?'#E87070':s==='bull'?'var(--sn)':'var(--g2)';
+  badge.style.color=s==='bear'?'#2D1B1B':s==='bull'?'var(--g1)':'var(--wh)';
+  document.getElementById('proj-scen-badge').textContent=(s==='bear'?'🐻 Bear':s==='bull'?'🐂 Bull':'✦ Base')+' Case';
+  document.getElementById('proj-scen-badge').className='badge '+(s==='bear'?'br':s==='bull'?'ba':'bg');
+  document.getElementById('pnl-scen-label').textContent=(s==='bear'?'Bear':s==='bull'?'Bull':'Base')+' Case';
+  document.getElementById('pnl-scen-label').className='scenario-label '+(s==='bear'?'label-bear':s==='bull'?'label-bull':'label-base');
+  recalcAll();
+}
+
+// ── TABS ──
+function showTab(id,el){
+  document.querySelectorAll('.tc').forEach(t=>t.classList.remove('act'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('act'));
+  document.getElementById('tab-'+id).classList.add('act');
+  el.classList.add('act');
+}
+
+// ── INIT ──
+recalcAll();
+runMonteCarlo();
+</script>
+</body>
+</html>
